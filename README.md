@@ -5,3 +5,17 @@
 3. Выполните команду `npm run start` чтобы запустить приложение,
 4. Выполните команду `npm run start-client` чтобы запустить только клиент,
 5. Выполните команду `npm run start-server` чтобы запустить только сервер
+
+### Как добавить зависимости?
+
+Чтобы добавить зависимость для клиента и сервера
+`npx lerna add {your_dep}`
+
+для клиента
+`npx lerna add {your_dep} --scope client`
+
+для сервера
+`npx lerna add {your_dep} --scope server`
+
+Добавить dev зависимость, то же самое, но с флагом `dev`
+`npx lerna add typescript --dev --scope client`
