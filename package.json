@@ -1,0 +1,22 @@
+{
+  "devDependencies": {
+    "lerna": "^6.6.2"
+  },
+  "scripts": {
+    "bootstrap": "lerna clean -y && lerna bootstrap --hoist",
+    "start": "lerna run start",
+    "start-client": "lerna run start --scope=client",
+    "start-server": "lerna run start --scope=server",
+    "build": "lerna run build",
+    "build-client": "lerna run build --scope=client",
+    "build-server": "lerna run build --scope=server",
+    "test": "lerna run test",
+    "test-client": "lerna run test --scope=client",
+    "test-server": "lerna run test --scope=server"
+  },
+  "name": "fjs-diplom",
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/*"
+  ]
+}
