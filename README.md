@@ -18,4 +18,4 @@
 `npx lerna add {your_dep} --scope server`
 
 Добавить dev зависимость, то же самое, но с флагом `dev`
-`npx lerna add typescript --dev --scope client`
+`npx lerna add {your_dep} --dev --scope client`
