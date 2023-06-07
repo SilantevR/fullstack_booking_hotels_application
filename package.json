@@ -4,6 +4,9 @@
   },
   "scripts": {
     "bootstrap": "lerna clean -y && lerna bootstrap --hoist",
+    "lint": "lerna run lint",
+    "lint-client": "lerna run lint --scope=client",
+    "lint-server": "lerna run lint --scope=server",
     "start": "lerna run start",
     "start-client": "lerna run start --scope=client",
     "start-server": "lerna run start --scope=server",
