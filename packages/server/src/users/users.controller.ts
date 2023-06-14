@@ -1,34 +1,67 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpStatus,
+  HttpCode,
+  Res,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { SignInUserDto } from './dto/sign-in-user.dto';
+import { ValidationPipe } from '@nestjs/common';
+import { Response } from 'express';
+import { Auth } from './decorator/auth.decorator';
+import { AuthType } from './enums/auth-type.enum';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
+@Auth(AuthType.None)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  @Post('sign-up')
+  create(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+  @HttpCode(HttpStatus.OK)
+  @Post('sign-in')
+  async find(
+    @Res({ passthrough: true }) response: Response,
+    @Body(new ValidationPipe()) signInUserDto: SignInUserDto,
+  ) {
+    const {accessToken, refreshToken}= await this.usersService.find(signInUserDto);
+    response.cookie('accessToken', accessToken, {
+      secure: true,
+      httpOnly: true,
+      sameSite: true,
+    });
+    response.cookie('refreshToken', refreshToken, {
+      secure: true,
+      httpOnly: true,
+      sameSite: true,
+    });
+    //return {accessToken, refreshToken};
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @HttpCode(HttpStatus.OK)
+  @Post('refresh')
+  async refresh(
+    @Res({ passthrough: true }) response: Response,
+    @Body(new ValidationPipe()) refreshTokenDto: RefreshTokenDto,
+  ) {
+    const {accessToken, refreshToken} = await this.usersService.refreshTokens(refreshTokenDto);
+    response.cookie('accessToken', accessToken, {
+      secure: true,
+      httpOnly: true,
+      sameSite: true,
+    });
+    response.cookie('refreshToken', refreshToken, {
+      secure: true,
+      httpOnly: true,
+      sameSite: true,
+    });
+    //return {accessToken, refreshToken};
   }
 }

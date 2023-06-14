@@ -1,10 +1,18 @@
+import { Role } from "../enums/role.enum";
+
 export interface User {
   id: string;
   email: string;
   name: string;
-  contactPhone: string;
-  passwordHash: string;
-  role: 'client' | 'admin' | 'manager';
+  contactPhone?: string;
+  password: string;
+  role: Role;
+}
+
+export interface ActiveUserData {
+  sub: User['id'];
+  email: User['email'];
+  role: User['role'];
 }
 
 export interface SearchUserParams {
