@@ -17,8 +17,16 @@ import { AuthenticationGuard } from './users/guards/authentication/authenticatio
 import { Token, TokenSchema } from './users/schemas/tokens.schema';
 import { TokensService } from './users/tokens.service';
 import { AuthorizationGuard } from './users/guards/authorization/authorization.guard';
+import { HotelsModule } from './hotels/hotels.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/public/',
+    }),
     UsersModule,
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     MongooseModule.forFeature([{ name: Token.name, schema: TokenSchema }]),
@@ -30,6 +38,7 @@ import { AuthorizationGuard } from './users/guards/authorization/authorization.g
     MongooseModule.forRoot(
       process.env.MONGODB_URL || 'mongodb://localhost:27017/booking',
     ),
+    HotelsModule,
   ],
   controllers: [AppController],
   providers: [

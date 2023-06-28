@@ -15,19 +15,19 @@ export class AppController {
   }
 
   @Roles(Role.Admin)
-  @Get("admin")
+  @Get('admin')
   getHelloAdmin(@ActiveUser() user: ActiveUserData): string {
     return this.appService.getHelloAdmin(user);
   }
   @Roles(Role.Admin)
   @Roles(Role.Manager)
-  @Get("manager")
+  @Get('manager')
   getHelloManager(@ActiveUser() user: ActiveUserData): string {
     return this.appService.getHelloManager(user);
   }
   @Roles(Role.Admin)
   @Roles(Role.Client)
-  @Get("client")
+  @Get('client')
   getHelloClient(@ActiveUser() user: ActiveUserData): string {
     return this.appService.getHelloManager(user);
   }

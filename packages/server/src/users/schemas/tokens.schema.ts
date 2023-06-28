@@ -8,7 +8,6 @@ export class Token {
   user: string;
   @Prop({ required: true })
   tokenId: string;
-  
 }
 
 export const TokenSchema = SchemaFactory.createForClass(Token);

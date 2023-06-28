@@ -7,6 +7,7 @@
     "lint": "lerna run lint",
     "lint-client": "lerna run lint --scope=client",
     "lint-server": "lerna run lint --scope=server",
+    "format-server": "lerna run format --scope=server",
     "start": "lerna run start",
     "start-client": "lerna run start --scope=client",
     "start-server": "lerna run start --scope=server",

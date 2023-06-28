@@ -1,7 +1,10 @@
-import { Role } from "../enums/role.enum";
+import { Role } from '../enums/role.enum';
+import mongoose = require('mongoose');
+import Types = mongoose.Types;
+import ObjectId = Types.ObjectId;
 
 export interface User {
-  id: string;
+  id: ObjectId;
   email: string;
   name: string;
   contactPhone?: string;
