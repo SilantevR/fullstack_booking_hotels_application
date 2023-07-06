@@ -3,7 +3,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { Room } from './schemas/room.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { SearchRoomsParams } from './interfaces/interfaces';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { HotelsService } from './hotels.service';
@@ -25,7 +25,6 @@ export class RoomsService implements HotelRoomService {
 
       return room;
     } catch (err) {
-      console.log(err);
       throw new InternalServerErrorException({
         status: 'fail',
         description: err.message,
@@ -33,7 +32,7 @@ export class RoomsService implements HotelRoomService {
     }
   }
 
-  async findById(id: string) {
+  async findById(id: Types.ObjectId) {
     try {
       return await this.roomModel.findById(id).select(['-__v']).exec();
     } catch (err) {
@@ -60,7 +59,7 @@ export class RoomsService implements HotelRoomService {
       });
     }
   }
-  async update(id: string, updateRoomDto: Room) {
+  async update(id: Types.ObjectId, updateRoomDto: Room) {
     try {
       return await this.roomModel
         .findByIdAndUpdate(id, updateRoomDto, {

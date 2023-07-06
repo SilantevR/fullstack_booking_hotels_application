@@ -6,39 +6,21 @@ import {
   HttpCode,
   Res,
   Req,
+  Get,
+  Query,
   ConflictException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { SignInUserDto } from './dto/sign-in-user.dto';
 import { ValidationPipe } from '@nestjs/common';
-import { Response, Request } from 'express';
-import { Auth } from './decorator/auth.decorator';
-import { AuthType } from './enums/auth-type.enum';
-import { RefreshTokenDto } from './dto/refresh-token.dto';
-import { Roles } from './decorator/roles.decorator';
-import { Role } from './enums/role.enum';
+import { Auth } from '../auth/decorator/auth.decorator';
+import { AuthType } from '../auth/enums/auth-type.enum';
+import { Roles } from '../auth/decorator/roles.decorator';
+import { Role } from '../auth/enums/role.enum';
 
 @Controller('api')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  @Auth(AuthType.None)
-  @Post('/client/register/')
-  async create(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
-    try {
-      const user = await this.usersService.create(createUserDto);
-      return {
-        name: user.name,
-        id: user.id,
-        email: user.email,
-      };
-    } catch (err) {
-      throw new ConflictException({
-        status: err.response.status,
-        description: err.response.description,
-      });
-    }
-  }
 
   @Roles(Role.Admin)
   @Post('/admin/users/')
@@ -62,67 +44,39 @@ export class UsersController {
     }
   }
 
-  @Auth(AuthType.None)
-  @HttpCode(HttpStatus.OK)
-  @Post('/auth/login/')
-  async find(
-    @Res({ passthrough: true }) response: Response,
-    @Body(new ValidationPipe()) signInUserDto: SignInUserDto,
+  @Get('/admin/users/')
+  async findAUsers(
+    @Query('email') email?: string,
+    @Query('limit') limit?: string,
+    @Query('offset') offset?: string,
+    @Query('name') name?: string,
+    @Query('contactPhone') contactPhone?: string,
   ) {
-    const { accessToken, refreshToken } = await this.usersService.find(
-      signInUserDto,
-    );
-    response.cookie('accessToken', accessToken, {
-      secure: true,
-      httpOnly: true,
-      sameSite: true,
-    });
-    response.cookie('refreshToken', refreshToken, {
-      secure: true,
-      httpOnly: true,
-      sameSite: true,
-    });
-    //return {accessToken, refreshToken};
+    const params = {
+      email,
+      limit: limit ? Number(limit) : 10,
+      offset: offset ? Number(offset) : 0,
+      name,
+      contactPhone,
+    };
+    return await this.usersService.findAll(params);
   }
 
-  @HttpCode(HttpStatus.OK)
-  @Post('/auth/logout/')
-  async logout(@Res() response: Response, @Req() request: Request) {
-    console.log(request.cookies);
-    response.clearCookie('accessToken', {
-      path: '/',
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-    });
-    response.clearCookie('refreshToken', {
-      path: '/',
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-    });
-    return;
-  }
-
-  @HttpCode(HttpStatus.OK)
-  @Post('/auth/refresh/')
-  async refresh(
-    @Res({ passthrough: true }) response: Response,
-    @Req() request: Request,
+  @Get('/manager/users/')
+  async findMUsers(
+    @Query('email') email?: string,
+    @Query('limit') limit?: string,
+    @Query('offset') offset?: string,
+    @Query('name') name?: string,
+    @Query('contactPhone') contactPhone?: string,
   ) {
-    const { accessToken, refreshToken } = await this.usersService.refreshTokens(
-      request.cookies['refreshToken'],
-    );
-    response.cookie('accessToken', accessToken, {
-      secure: true,
-      httpOnly: true,
-      sameSite: true,
-    });
-    response.cookie('refreshToken', refreshToken, {
-      secure: true,
-      httpOnly: true,
-      sameSite: true,
-    });
-    //return {accessToken, refreshToken};
+    const params = {
+      email,
+      limit: limit ? Number(limit) : 10,
+      offset: offset ? Number(offset) : 0,
+      name,
+      contactPhone,
+    };
+    return await this.usersService.findAll(params);
   }
 }

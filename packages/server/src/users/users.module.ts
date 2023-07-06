@@ -3,13 +3,13 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schemas/user.schema';
-import { HashingService } from './hashing.service';
-import { BcryptService } from './bcrypt.service';
-import jwtConfig from './config/jwt.config';
+import { HashingService } from '../auth/hashing.service';
+import { BcryptService } from '../auth/bcrypt.service';
+import jwtConfig from '../auth/config/jwt.config';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
-import { TokensService } from './tokens.service';
-import { Token, TokenSchema } from './schemas/tokens.schema';
+import { TokensService } from '../auth/tokens.service';
+import { Token, TokenSchema } from '../auth/schemas/tokens.schema';
 
 @Module({
   imports: [

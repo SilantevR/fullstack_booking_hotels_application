@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Token } from './schemas/tokens.schema';
 
@@ -7,7 +7,7 @@ import { Token } from './schemas/tokens.schema';
 export class TokensService {
   constructor(@InjectModel(Token.name) private tokenModel: Model<Token>) {}
 
-  async insert(userId: string, tokenId: string): Promise<void> {
+  async insert(userId: Types.ObjectId, tokenId: string): Promise<void> {
     await this.tokenModel.create({ user: userId, tokenId });
   }
 

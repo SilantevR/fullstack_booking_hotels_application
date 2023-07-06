@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { Room } from '../interfaces/interfaces';
 import { IsString, Length, IsNotEmpty } from 'class-validator';
 
@@ -18,9 +19,6 @@ export class CreateRoomDto {
   })
   description: Room['description'];
 
-  //images: Room["images"]
-  //isEnabled: Room["isEnabled"]
-
   @IsNotEmpty()
-  hotelId: string;
+  hotelId: Types.ObjectId;
 }

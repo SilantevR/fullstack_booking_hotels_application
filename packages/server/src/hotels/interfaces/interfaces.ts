@@ -34,9 +34,9 @@ export interface UpdateHotelParams {
 
 export interface IHotelService {
   create(data: any): Promise<Hotel>;
-  findById(id: string): Promise<Hotel>;
+  findById(id: Types.ObjectId): Promise<Hotel>;
   search(params: SearchHotelParams): Promise<Hotel[]>;
-  update(id: string, data: UpdateHotelParams): Promise<Hotel>;
+  update(id: Types.ObjectId, data: UpdateHotelParams): Promise<Hotel>;
 }
 
 export interface SearchRoomsParams {
@@ -48,7 +48,7 @@ export interface SearchRoomsParams {
 
 export interface HotelRoomService {
   create(data: Room): Promise<Room>;
-  findById(id: string): Promise<Room>;
+  findById(id: Types.ObjectId): Promise<Room>;
   search(params: SearchRoomsParams): Promise<Room[]>;
-  update(id: string, data: UpdateRoomDto): Promise<Room>;
+  update(id: Types.ObjectId, data: UpdateRoomDto): Promise<Room>;
 }

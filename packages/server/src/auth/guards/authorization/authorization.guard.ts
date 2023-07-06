@@ -1,9 +1,9 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
-import { Role } from 'src/users/enums/role.enum';
-import { ROLES_KEY } from 'src/users/decorator/roles.decorator';
-import { ActiveUserData } from 'src/users/interfaces/interfaces';
+import { Role } from '../../enums/role.enum';
+import { ROLES_KEY } from '../../decorator/roles.decorator';
+import { ActiveUserData } from '../../interfaces/interfaces';
 import * as dotenv from 'dotenv';
 dotenv.config();
 

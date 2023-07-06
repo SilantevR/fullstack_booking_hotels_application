@@ -1,21 +1,15 @@
-import { Role } from '../enums/role.enum';
+import { Role } from '../../auth/enums/role.enum';
 import mongoose = require('mongoose');
 import Types = mongoose.Types;
 import ObjectId = Types.ObjectId;
 
 export interface User {
-  id: ObjectId;
+  id?: ObjectId;
   email: string;
   name: string;
   contactPhone?: string;
   password: string;
   role: Role;
-}
-
-export interface ActiveUserData {
-  sub: User['id'];
-  email: User['email'];
-  role: User['role'];
 }
 
 export interface SearchUserParams {

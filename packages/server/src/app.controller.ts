@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ActiveUser } from './users/decorator/active-user.decorator';
-import { ActiveUserData } from './users/interfaces/interfaces';
-import { Roles } from './users/decorator/roles.decorator';
-import { Role } from './users/enums/role.enum';
+import { ActiveUser } from './auth/decorator/active-user.decorator';
+import { ActiveUserData } from './auth/interfaces/interfaces';
+import { Roles } from './auth/decorator/roles.decorator';
+import { Role } from './auth/enums/role.enum';
 
 @Controller()
 export class AppController {

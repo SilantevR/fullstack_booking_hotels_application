@@ -32,7 +32,7 @@ export class HotelsController {
   ) {}
 
   @Post('/admin/hotels/')
-  create(@Body() createHotelDto: CreateHotelDto) {
+  create(@Body(new ValidationPipe()) createHotelDto: CreateHotelDto) {
     return this.hotelsService.create(createHotelDto);
   }
 
@@ -46,7 +46,7 @@ export class HotelsController {
 
   @Put('/admin/hotels/:id')
   update(
-    @Param('id') id: string,
+    @Param('id') id: Types.ObjectId,
     @Body(new ValidationPipe()) updateHotelDto: UpdateHotelDto,
   ) {
     return this.hotelsService.update(id, updateHotelDto);
@@ -71,7 +71,7 @@ export class HotelsController {
       }),
     )
     files: Array<Express.Multer.File>,
-    @Body() createRoomDto: CreateRoomDto,
+    @Body(new ValidationPipe()) createRoomDto: CreateRoomDto,
   ) {
     //console.log(files);
     const images = files.map((file) => file.path);
@@ -103,7 +103,7 @@ export class HotelsController {
   }
 
   @Get('/common/hotel-rooms/:id')
-  findById(@Param('id') id: string) {
+  findById(@Param('id') id: Types.ObjectId) {
     return this.roomsService.findById(id);
   }
 
@@ -117,9 +117,9 @@ export class HotelsController {
     }),
   )
   async editRoom(
-    @Param('id') id: string,
+    @Param('id') id: Types.ObjectId,
     @UploadedFiles() files: Array<Express.Multer.File>,
-    @Body() updateRoomDto: UpdateRoomDto,
+    @Body(new ValidationPipe()) updateRoomDto: UpdateRoomDto,
   ) {
     //const isEnabled = true;
     const images = [];

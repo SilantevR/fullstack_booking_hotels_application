@@ -4,7 +4,7 @@ import { UpdateHotelDto } from './dto/update-hotel.dto';
 import { RoomsService } from './rooms.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Hotel } from './schemas/hotel.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { IHotelService, SearchHotelParams } from './interfaces/interfaces';
 
 @Injectable()
@@ -33,7 +33,7 @@ export class HotelsService implements IHotelService {
     }
   }
 
-  async findById(id: string) {
+  async findById(id: Types.ObjectId) {
     try {
       return await this.hotelModel.findById(id).select(['-__v']).exec();
     } catch (err) {
@@ -61,7 +61,7 @@ export class HotelsService implements IHotelService {
     }
   }
 
-  async update(id: string, updateHotelDto: UpdateHotelDto) {
+  async update(id: Types.ObjectId, updateHotelDto: UpdateHotelDto) {
     try {
       return await this.hotelModel
         .findByIdAndUpdate(

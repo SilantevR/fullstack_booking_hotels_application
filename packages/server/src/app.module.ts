@@ -4,22 +4,24 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { AccessTokenGuard } from './users/guards/access-token/access-token.guard';
+import { AccessTokenGuard } from './auth/guards/access-token/access-token.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { UsersService } from './users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import jwtConfig from './users/config/jwt.config';
+import jwtConfig from './auth/config/jwt.config';
 import { JwtModule } from '@nestjs/jwt';
 import { User, UserSchema } from './users/schemas/user.schema';
-import { HashingService } from './users/hashing.service';
-import { BcryptService } from './users/bcrypt.service';
-import { AuthenticationGuard } from './users/guards/authentication/authentication.guard';
-import { Token, TokenSchema } from './users/schemas/tokens.schema';
-import { TokensService } from './users/tokens.service';
-import { AuthorizationGuard } from './users/guards/authorization/authorization.guard';
+import { HashingService } from './auth/hashing.service';
+import { BcryptService } from './auth/bcrypt.service';
+import { AuthenticationGuard } from './auth/guards/authentication/authentication.guard';
+import { Token, TokenSchema } from './auth/schemas/tokens.schema';
+import { TokensService } from './auth/tokens.service';
+import { AuthorizationGuard } from './auth/guards/authorization/authorization.guard';
 import { HotelsModule } from './hotels/hotels.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { BookingModule } from './booking/booking.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -39,6 +41,8 @@ import { join } from 'path';
       process.env.MONGODB_URL || 'mongodb://localhost:27017/booking',
     ),
     HotelsModule,
+    BookingModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
