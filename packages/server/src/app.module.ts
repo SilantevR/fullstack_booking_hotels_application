@@ -22,9 +22,12 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { BookingModule } from './booking/booking.module';
 import { AuthModule } from './auth/auth.module';
+import { ChatModule } from './chat/chat.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       serveRoot: '/public/',
@@ -43,6 +46,7 @@ import { AuthModule } from './auth/auth.module';
     HotelsModule,
     BookingModule,
     AuthModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [

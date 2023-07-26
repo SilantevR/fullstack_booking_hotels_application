@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "lerna": "^6.6.2"
+    "lerna": "^7.1.4"
   },
   "scripts": {
     "bootstrap": "lerna clean -y && lerna bootstrap --hoist",
