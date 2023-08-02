@@ -45,9 +45,10 @@ export interface ISupportRequestService {
   findSupportRequests(params: GetChatListParams): Promise<SupportRequest[]>;
   sendMessage(data: SendMessageDto): Promise<Message>;
   getMessages(supportRequest: Types.ObjectId): Promise<Message[]>;
+  /*Реализовано за счет функционала комнат библиотеки soket.io в chat.gateway.ts
   subscribe(
     handler: (supportRequest: SupportRequest, message: Message) => void,
-  ): () => void;
+  ): () => void;*/
 }
 
 export interface ISupportRequestClientService {

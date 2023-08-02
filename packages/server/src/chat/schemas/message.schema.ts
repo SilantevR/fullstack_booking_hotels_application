@@ -3,7 +3,7 @@ import { HydratedDocument, Types } from 'mongoose';
 import { Message as IMessage } from '../interfaces/interfaces';
 export type MessageDocument = HydratedDocument<Message>;
 
-@Schema({ collection: 'message' })
+@Schema()
 export class Message {
   @Prop({ required: true })
   author: Types.ObjectId;

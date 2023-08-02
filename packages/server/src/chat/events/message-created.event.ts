@@ -1,7 +1,6 @@
-import { Types } from 'mongoose';
+import { Message } from '../interfaces/interfaces';
 
 export class MessageCreatedEvent {
-  author: Types.ObjectId;
-  text: string;
-  sentAt: Date;
+  supportRequest: string;
+  message: Message;
 }

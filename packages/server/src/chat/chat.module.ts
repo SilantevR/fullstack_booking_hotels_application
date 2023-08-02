@@ -19,11 +19,9 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
 import { HashingService } from '../auth/hashing.service';
 import { BcryptService } from '../auth/bcrypt.service';
-import { MessageCreatedListener } from './listeners/message-created.listener';
 
 @Module({
   providers: [
-    MessageCreatedListener,
     ChatGateway,
     SupportRequestService,
     SupportRequestClientService,

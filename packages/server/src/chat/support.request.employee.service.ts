@@ -29,14 +29,13 @@ export class SupportRequestEmployeeService
         params.user,
       );
       for (let message of unreadMessages) {
-        const result = await this.messageModel.findByIdAndUpdate(
-          message._id.valueOf(),
+        await this.messageModel.findByIdAndUpdate(
+          message._id,
           { readAt: new Date() },
           {
             returnDocument: 'after',
           },
         );
-        console.log(result);
       }
 
       return {
@@ -51,6 +50,7 @@ export class SupportRequestEmployeeService
     /*должен выставлять текущую дату в поле readAt всем сообщениям, 
     которые не были прочитаны и были отправлены пользователем.*/
   }
+
   async getUnreadCount(
     supportRequest: Types.ObjectId,
     userId: Types.ObjectId,
@@ -58,6 +58,7 @@ export class SupportRequestEmployeeService
     try {
       const sRequest = await this.supportRequestModel
         .findById(supportRequest)
+        .populate('messages')
         .select(['-__v'])
         .exec();
       const result = [];
@@ -66,7 +67,7 @@ export class SupportRequestEmployeeService
           result.push(message);
         }
       });
-      console.log(result);
+      //console.log(result);
       return result;
     } catch (err) {
       throw new InternalServerErrorException({

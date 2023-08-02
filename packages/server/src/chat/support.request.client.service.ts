@@ -38,7 +38,7 @@ export class SupportRequestClientService
         user: data.user,
         createdAt: new Date(),
         isActive: true,
-        messages: [message],
+        messages: [message._id],
       });
       return {
         id: supportRequest._id,
@@ -70,6 +70,7 @@ export class SupportRequestClientService
           },
         );
       }
+      await this.supportRequestModel.findByIdAndUpdate();
 
       return {
         success: true,
@@ -90,6 +91,7 @@ export class SupportRequestClientService
     try {
       const sRequest = await this.supportRequestModel
         .findById(supportRequest)
+        .populate('messages')
         .select(['-__v'])
         .exec();
       const result = [];

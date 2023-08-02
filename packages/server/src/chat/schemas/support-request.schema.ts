@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Types } from 'mongoose';
+import { HydratedDocument, Types, SchemaTypes } from 'mongoose';
 import { MessageSchema, Message } from './message.schema';
 import { SupportRequest as ISuportRequest } from '../interfaces/interfaces';
 export type SupportRequestDocument = HydratedDocument<SupportRequest>;
@@ -12,7 +12,7 @@ export class SupportRequest {
   createdAt: Date;
   @Prop()
   isActive: boolean;
-  @Prop({ type: [MessageSchema] })
+  @Prop({ type: [SchemaTypes.ObjectId], ref: 'Message' })
   messages: Message[];
 }
 

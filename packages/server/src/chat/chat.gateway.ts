@@ -6,34 +6,33 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { SupportRequestService } from './support.request.service';
-
-@WebSocketGateway()
+import { OnEvent } from '@nestjs/event-emitter';
+import { MessageCreatedEvent } from './events/message-created.event';
+@WebSocketGateway({ cors: true })
 export class ChatGateway {
-  constructor(private readonly chatService: SupportRequestService) {}
+  constructor(private readonly supportRequestService: SupportRequestService) {}
   @WebSocketServer() server: Server;
 
   handleConnection() {
     console.log('new connection!');
   }
 
-  @SubscribeMessage('message')
-  handleMessage(
-    socket: Socket,
-    message: { sender: string; room: string; message: string },
-  ) {
-    this.server.to(message.room).emit('messageToClient', message);
-    return;
+  @OnEvent('message.send')
+  handleMessage(event: MessageCreatedEvent) {
+    //console.log(event);
+    this.server.to(event.supportRequest).emit(`message`, event.message);
   }
 
-  @SubscribeMessage('joinRoom')
+  @SubscribeMessage('subscribeToChat')
   handleJoinRoom(socket: Socket, room: string) {
     socket.join(room);
-    socket.emit('joinedRoom', room);
+    /*console.log(room);
+    socket.emit('joinedToChat', { room: room });*/
   }
 
-  @SubscribeMessage('leaveRoom')
+  @SubscribeMessage('leaveChat')
   handleLeaveRoom(socket: Socket, room: string) {
     socket.leave(room);
-    socket.emit('leftRoom', room);
+    /*socket.emit('leaveChat', room);*/
   }
 }

@@ -51,6 +51,7 @@ export class SupportRequestService implements ISupportRequestService {
     try {
       return await this.supportRequestModel
         .findById(supportRequest)
+        .populate('messages', ['-__v'])
         .select(['-__v'])
         .exec();
     } catch (err) {
@@ -72,9 +73,9 @@ export class SupportRequestService implements ISupportRequestService {
         text: data.text,
         readAt: undefined,
       });
-      supportRequest.messages.push(message);
+      supportRequest.messages.push(message.id);
 
-      const updatedSR = await this.supportRequestModel
+      await this.supportRequestModel
         .findByIdAndUpdate(
           data.supportRequest,
           { messages: supportRequest.messages },
@@ -86,12 +87,11 @@ export class SupportRequestService implements ISupportRequestService {
         .exec();
 
       const messageSendEvent = new MessageCreatedEvent();
-      messageSendEvent.author = message.author;
-      messageSendEvent.text = message.text;
-      messageSendEvent.sentAt = message.sentAt;
+      messageSendEvent.supportRequest = supportRequest.id;
+      messageSendEvent.message = message;
       this.eventEmitter.emit('message.send', messageSendEvent);
 
-      return updatedSR.messages[updatedSR.messages.length - 1];
+      return message;
     } catch (err) {
       throw new InternalServerErrorException({
         status: 'fail',
@@ -110,11 +110,5 @@ export class SupportRequestService implements ISupportRequestService {
         description: err.message,
       });
     }
-  }
-
-  subscribe(
-    handler: (supportRequest: ISupportRequest, message: IMessage) => void,
-  ): () => void {
-    return;
   }
 }
