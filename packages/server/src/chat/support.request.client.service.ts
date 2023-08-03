@@ -13,12 +13,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { SupportRequest } from './schemas/support-request.schema';
 import { Model } from 'mongoose';
 import { Message } from './schemas/message.schema';
+import { SupportRequestService } from './support.request.service';
 
 @Injectable()
 export class SupportRequestClientService
   implements ISupportRequestClientService
 {
   constructor(
+    private readonly supportRequestService: SupportRequestService,
     @InjectModel(SupportRequest.name)
     private supportRequestModel: Model<SupportRequest>,
     @InjectModel(Message.name) private messageModel: Model<Message>,
@@ -89,14 +91,17 @@ export class SupportRequestClientService
     userId: Types.ObjectId,
   ): Promise<IMessage[]> {
     try {
-      const sRequest = await this.supportRequestModel
+      const sRequest = await this.supportRequestService.findSupportRequestById(
+        supportRequest,
+      );
+      /*await this.supportRequestModel
         .findById(supportRequest)
         .populate('messages')
         .select(['-__v'])
-        .exec();
+        .exec();*/
       const result = [];
       sRequest.messages.map((message) => {
-        if (!message.readAt && message.author != userId) {
+        if (!message.readAt && message.author.id.valueOf() != userId) {
           result.push(message);
         }
       });

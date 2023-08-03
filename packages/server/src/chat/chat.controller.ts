@@ -78,7 +78,8 @@ export class ChatController {
     try {
       const supportRequest =
         await this.supportRequestService.findSupportRequestById(id);
-      if (role === 'manager' || userId === supportRequest.user) {
+
+      if (role === 'manager' || userId === supportRequest.user.id.valueOf()) {
         return await this.supportRequestService.getMessages(id);
       } else {
         throw new ForbiddenException({
@@ -103,7 +104,8 @@ export class ChatController {
   ) {
     const supportRequest =
       await this.supportRequestService.findSupportRequestById(id);
-    if (role === 'manager' || userId === supportRequest.user) {
+
+    if (role === 'manager' || userId === supportRequest.user.id.valueOf()) {
       return await this.supportRequestService.sendMessage({
         supportRequest: id,
         author: userId,
@@ -139,7 +141,7 @@ export class ChatController {
           supportRequest: id,
           createdBefore: markMessagesAsReadDto.createdBefore,
         });
-      } else if (userId === supportRequest.user) {
+      } else if (userId === supportRequest.user.id.valueOf()) {
         return await this.supportRequestClientService.markMessagesAsRead({
           user: userId,
           supportRequest: id,

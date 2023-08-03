@@ -2,15 +2,12 @@ import { Socket, Server } from 'socket.io';
 import {
   WebSocketGateway,
   SubscribeMessage,
-  MessageBody,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { SupportRequestService } from './support.request.service';
 import { OnEvent } from '@nestjs/event-emitter';
-import { MessageCreatedEvent } from './events/message-created.event';
+import { SupportRequest } from './interfaces/interfaces';
 @WebSocketGateway({ cors: true })
 export class ChatGateway {
-  constructor(private readonly supportRequestService: SupportRequestService) {}
   @WebSocketServer() server: Server;
 
   handleConnection() {
@@ -18,9 +15,10 @@ export class ChatGateway {
   }
 
   @OnEvent('message.send')
-  handleMessage(event: MessageCreatedEvent) {
-    //console.log(event);
-    this.server.to(event.supportRequest).emit(`message`, event.message);
+  handleMessage(event: SupportRequest) {
+    this.server
+      .to(event.id.valueOf().toString())
+      .emit(`message`, event.messages[event.messages.length - 1]);
   }
 
   @SubscribeMessage('subscribeToChat')

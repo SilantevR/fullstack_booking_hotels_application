@@ -56,14 +56,17 @@ export class SupportRequestEmployeeService
     userId: Types.ObjectId,
   ): Promise<IMessage[]> {
     try {
-      const sRequest = await this.supportRequestModel
+      const sRequest = await this.supportRequestService.findSupportRequestById(
+        supportRequest,
+      );
+      /*await this.supportRequestModel
         .findById(supportRequest)
         .populate('messages')
         .select(['-__v'])
-        .exec();
+        .exec();*/
       const result = [];
       sRequest.messages.map((message) => {
-        if (!message.readAt && message.author != userId) {
+        if (!message.readAt && message.author.id.valueOf() != userId) {
           result.push(message);
         }
       });

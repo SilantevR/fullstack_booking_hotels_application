@@ -1,8 +1,9 @@
 import { Types } from 'mongoose';
+import { User } from 'src/users/interfaces/interfaces';
 
 export interface SupportRequest {
   id?: Types.ObjectId;
-  user: Types.ObjectId;
+  user: User;
   createdAt: Date;
   messages?: Message[];
   isActive?: boolean;
@@ -11,7 +12,7 @@ export interface SupportRequest {
 
 export interface Message {
   _id?: Types.ObjectId;
-  author: Types.ObjectId;
+  author: User;
   sentAt: Date;
   text: string;
   readAt?: Date;

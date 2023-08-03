@@ -12,7 +12,6 @@ import { SupportRequest } from './schemas/support-request.schema';
 import { Model } from 'mongoose';
 import { Message } from './schemas/message.schema';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { MessageCreatedEvent } from './events/message-created.event';
 
 @Injectable()
 export class SupportRequestService implements ISupportRequestService {
@@ -35,6 +34,17 @@ export class SupportRequestService implements ISupportRequestService {
       }
       return await this.supportRequestModel
         .find(query)
+        //.populate('messages.author', ['-__v'])
+        .populate({
+          path: 'messages',
+          select: ['-__v'],
+          populate: {
+            path: 'author',
+            model: 'User',
+            select: ['id', 'name'],
+          },
+        })
+        .populate('user', ['id', 'name'])
         .limit(params.limit)
         .skip(params.offset)
         .select(['-__v'])
@@ -47,11 +57,23 @@ export class SupportRequestService implements ISupportRequestService {
     }
   }
 
-  async findSupportRequestById(supportRequest: Types.ObjectId) {
+  async findSupportRequestById(
+    supportRequest: Types.ObjectId,
+  ): Promise<ISupportRequest> {
     try {
       return await this.supportRequestModel
         .findById(supportRequest)
-        .populate('messages', ['-__v'])
+        //.populate('messages', ['-__v'])
+        .populate({
+          path: 'messages',
+          select: ['-__v'],
+          populate: {
+            path: 'author',
+            model: 'User',
+            select: ['id', 'name'],
+          },
+        })
+        .populate('user', ['id', 'name'])
         .select(['-__v'])
         .exec();
     } catch (err) {
@@ -64,18 +86,19 @@ export class SupportRequestService implements ISupportRequestService {
 
   async sendMessage(data: SendMessageDto): Promise<IMessage> {
     try {
-      const supportRequest = await this.findSupportRequestById(
-        data.supportRequest,
-      );
+      const supportRequest = await this.supportRequestModel
+        .findById(data.supportRequest)
+        .exec();
       const message = await this.messageModel.create({
         author: data.author,
         sentAt: new Date(),
         text: data.text,
         readAt: undefined,
       });
+
       supportRequest.messages.push(message.id);
 
-      await this.supportRequestModel
+      const updatedSR = await this.supportRequestModel
         .findByIdAndUpdate(
           data.supportRequest,
           { messages: supportRequest.messages },
@@ -83,15 +106,22 @@ export class SupportRequestService implements ISupportRequestService {
             returnDocument: 'after',
           },
         )
+        .populate({
+          path: 'messages',
+          select: ['-__v'],
+          populate: {
+            path: 'author',
+            model: 'User',
+            select: ['id', 'name'],
+          },
+        })
+        .populate('user', ['id', 'name'])
         .select(['-__v'])
         .exec();
 
-      const messageSendEvent = new MessageCreatedEvent();
-      messageSendEvent.supportRequest = supportRequest.id;
-      messageSendEvent.message = message;
-      this.eventEmitter.emit('message.send', messageSendEvent);
+      this.eventEmitter.emit('message.send', updatedSR);
 
-      return message;
+      return updatedSR.messages[updatedSR.messages.length - 1];
     } catch (err) {
       throw new InternalServerErrorException({
         status: 'fail',
