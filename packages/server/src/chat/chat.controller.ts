@@ -18,6 +18,8 @@ import { CreateSupportRequestDto } from './dto/create-support-request.dto';
 import { SendMessageDto } from './dto/send-message.dto';
 import { MarkMessagesAsReadDto } from './dto/mark-messages-as-read.dto';
 import { Types } from 'mongoose';
+import { Roles } from '../auth/decorator/roles.decorator';
+import { Role } from '../auth/enums/role.enum';
 
 @Controller('/api/')
 export class ChatController {
@@ -27,6 +29,7 @@ export class ChatController {
     private readonly supportRequestEmployeeService: SupportRequestEmployeeService,
   ) {}
 
+  @Roles(Role.Client)
   @Post('/client/support-requests/')
   async supportRequests(
     @ActiveUser('sub') id: ActiveUserData['sub'],
@@ -38,6 +41,7 @@ export class ChatController {
     });
   }
 
+  @Roles(Role.Client)
   @Get('/client/support-requests/')
   async getSupportRequests(
     @ActiveUser('sub') id: ActiveUserData['sub'],
@@ -53,6 +57,7 @@ export class ChatController {
     });
   }
 
+  @Roles(Role.Manager)
   @Get('/manager/support-requests/')
   async getManagerSupportRequests(
     @Query('isActive') isActive?: string,
@@ -67,6 +72,8 @@ export class ChatController {
     });
   }
 
+  @Roles(Role.Manager)
+  @Roles(Role.Client)
   @Get('/common/support-requests/:id/messages')
   async getSupportRequestsMessages(
     @ActiveUser('sub') userId: ActiveUserData['sub'],
@@ -95,6 +102,8 @@ export class ChatController {
     }
   }
 
+  @Roles(Role.Manager)
+  @Roles(Role.Client)
   @Post('/common/support-requests/:id/messages')
   async sendMessage(
     @ActiveUser('sub') userId: ActiveUserData['sub'],
@@ -125,6 +134,8 @@ export class ChatController {
     });
   }
 
+  @Roles(Role.Manager)
+  @Roles(Role.Client)
   @Post('/common/support-requests/:id/messages/read')
   async readMessages(
     @ActiveUser('sub') userId: ActiveUserData['sub'],

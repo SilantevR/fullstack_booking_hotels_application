@@ -24,6 +24,7 @@ import { BookingModule } from './booking/booking.module';
 import { AuthModule } from './auth/auth.module';
 import { ChatModule } from './chat/chat.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { AllAccessGuard } from './auth/guards/access-token/all-access.guard';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
       useClass: BcryptService,
     },
     AccessTokenGuard,
+    AllAccessGuard,
     UsersService,
     JwtService,
   ],

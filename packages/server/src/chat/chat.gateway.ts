@@ -10,10 +10,6 @@ import { SupportRequest } from './interfaces/interfaces';
 export class ChatGateway {
   @WebSocketServer() server: Server;
 
-  handleConnection() {
-    console.log('new connection!');
-  }
-
   @OnEvent('message.send')
   handleMessage(event: SupportRequest) {
     this.server

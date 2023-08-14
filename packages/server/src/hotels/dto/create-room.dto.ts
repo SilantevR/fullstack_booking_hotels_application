@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
 import { Room } from '../interfaces/interfaces';
-import { IsString, Length, IsNotEmpty } from 'class-validator';
+import { IsString, Length, IsNotEmpty, IsMongoId } from 'class-validator';
 
 export class CreateRoomDto {
   @IsString()
@@ -20,5 +20,11 @@ export class CreateRoomDto {
   description: Room['description'];
 
   @IsNotEmpty()
+  @IsMongoId()
   hotelId: Types.ObjectId;
+
+  images: string[];
+  isEnabled: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }

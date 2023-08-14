@@ -23,6 +23,12 @@ import { Types } from 'mongoose';
 import { diskStorage } from 'multer';
 import { CreateRoomDto } from './dto/create-room.dto';
 import fileName from 'src/static.file.name';
+import { Roles } from '../auth/decorator/roles.decorator';
+import { Role } from '../auth/enums/role.enum';
+import { Auth } from '../auth/decorator/auth.decorator';
+import { AuthType } from '../auth/enums/auth-type.enum';
+import { ActiveUser } from '../auth/decorator/active-user.decorator';
+import { ActiveUserData } from 'src/auth/interfaces/interfaces';
 
 @Controller('api')
 export class HotelsController {
@@ -31,11 +37,13 @@ export class HotelsController {
     private readonly roomsService: RoomsService,
   ) {}
 
+  @Roles(Role.Admin)
   @Post('/admin/hotels/')
   create(@Body(new ValidationPipe()) createHotelDto: CreateHotelDto) {
     return this.hotelsService.create(createHotelDto);
   }
 
+  @Roles(Role.Admin)
   @Get('/admin/hotels/')
   find(@Query('limit') limit?: string, @Query('offset') offset?: string) {
     return this.hotelsService.search({
@@ -44,6 +52,7 @@ export class HotelsController {
     });
   }
 
+  @Roles(Role.Admin)
   @Put('/admin/hotels/:id')
   update(
     @Param('id') id: Types.ObjectId,
@@ -52,6 +61,7 @@ export class HotelsController {
     return this.hotelsService.update(id, updateHotelDto);
   }
 
+  @Roles(Role.Admin)
   @Post('/admin/hotel-rooms/')
   @UseInterceptors(
     AnyFilesInterceptor({
@@ -73,13 +83,11 @@ export class HotelsController {
     files: Array<Express.Multer.File>,
     @Body(new ValidationPipe()) createRoomDto: CreateRoomDto,
   ) {
-    //console.log(files);
     const images = files.map((file) => file.path);
     const isEnabled = true;
-    const hotel = await this.hotelsService.findById(createRoomDto.hotelId);
+
     return await this.roomsService.create({
       ...createRoomDto,
-      hotel,
       images,
       isEnabled,
       createdAt: new Date(),
@@ -87,13 +95,21 @@ export class HotelsController {
     });
   }
 
+  @Auth(AuthType.None)
   @Get('/common/hotel-rooms')
   search(
+    @ActiveUser('role') role: ActiveUserData['role'],
     @Query('hotel') hotel?: Types.ObjectId,
     @Query('limit') limit?: string,
     @Query('offset') offset?: string,
   ) {
-    const isEnabled = true;
+    console.log(role);
+    let isEnabled = false;
+
+    if (!role || role === 'client') {
+      isEnabled = true;
+    }
+
     return this.roomsService.search({
       limit: limit ? Number(limit) : 10,
       offset: offset ? Number(offset) : 0,
@@ -102,11 +118,13 @@ export class HotelsController {
     });
   }
 
+  @Auth(AuthType.None)
   @Get('/common/hotel-rooms/:id')
   findById(@Param('id') id: Types.ObjectId) {
     return this.roomsService.findById(id);
   }
 
+  @Roles(Role.Admin)
   @Put('/admin/hotel-rooms/:id')
   @UseInterceptors(
     AnyFilesInterceptor({
@@ -121,15 +139,16 @@ export class HotelsController {
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Body(new ValidationPipe()) updateRoomDto: UpdateRoomDto,
   ) {
-    //const isEnabled = true;
     const images = [];
     const oldImages = updateRoomDto.images;
     Array.isArray(oldImages)
       ? oldImages.map((file) => images.push(file))
       : images.push(oldImages);
     files.map((file) => images.push(file.path));
+
     return await this.roomsService.update(id, {
       ...updateRoomDto,
+      images: images,
       updatedAt: new Date(),
     });
   }

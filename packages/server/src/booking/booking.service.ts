@@ -31,8 +31,13 @@ export class BookingService implements IReservation {
   ): Promise<Reservation | void> {
     try {
       const room = await this.roomsService.findById(createBokingDto.hotelRoom);
-      //const user = await this.usersService.findById(userId)
       if (room) {
+        if (!room.isEnabled) {
+          throw new ConflictException({
+            status: 'fail',
+            description: 'Номер не доступен',
+          });
+        }
         const bookings = await this.bookingModel
           .find({
             roomId: room._id,
@@ -124,31 +129,33 @@ export class BookingService implements IReservation {
         userId: filter.userId,
       };
     }
+    try {
+      const bookings = await this.bookingModel
+        .find(query)
+        .populate('roomId', ['description', 'images'])
+        .populate('hotelId', ['title', 'description'])
+        .select(['-__v'])
+        .exec();
 
-    const bookings = await this.bookingModel
-      .find(query)
-      .select(['-__v'])
-      .exec();
+      const result = [];
 
-    const result = [];
+      for (let booking of bookings) {
+        //let room = await this.roomsService.findById(booking.roomId);
+        result.push({
+          id: booking.id,
+          dateStart: booking.dateStart,
+          dateEnd: booking.dateEnd,
+          hotelRoom: booking.roomId,
+          hotel: booking.hotelId,
+        });
+      }
 
-    for (let booking of bookings) {
-      let room = await this.roomsService.findById(booking.roomId);
-      result.push({
-        id: booking.id,
-        dateStart: booking.dateStart,
-        dateEnd: booking.dateEnd,
-        hotelRoom: {
-          description: room.description,
-          images: room.images,
-        },
-        hotel: {
-          title: room.hotel.title,
-          description: room.hotel.description,
-        },
+      return result;
+    } catch (err) {
+      throw new InternalServerErrorException({
+        status: 'fail',
+        description: err.message,
       });
     }
-
-    return result;
   }
 }

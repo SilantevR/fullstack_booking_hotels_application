@@ -32,9 +32,9 @@ export class SupportRequestService implements ISupportRequestService {
       } else {
         query = { isActive: params.isActive };
       }
+      console.log(query);
       return await this.supportRequestModel
         .find(query)
-        //.populate('messages.author', ['-__v'])
         .populate({
           path: 'messages',
           select: ['-__v'],

@@ -11,7 +11,7 @@ export interface Hotel {
 }
 
 export interface Room {
-  _id?: Types.ObjectId;
+  id?: Types.ObjectId;
   title: string;
   description: string;
   images: string[];
@@ -25,6 +25,10 @@ export interface SearchHotelParams {
   limit: number;
   offset: number;
   title?: string;
+}
+export interface QueryParams {
+  hotel?: Types.ObjectId;
+  isEnabled?: boolean;
 }
 
 export interface UpdateHotelParams {
@@ -47,7 +51,7 @@ export interface SearchRoomsParams {
 }
 
 export interface HotelRoomService {
-  create(data: Room): Promise<Room>;
+  create(data: CreateRoomDto): Promise<Room>;
   findById(id: Types.ObjectId): Promise<Room>;
   search(params: SearchRoomsParams): Promise<Room[]>;
   update(id: Types.ObjectId, data: UpdateRoomDto): Promise<Room>;

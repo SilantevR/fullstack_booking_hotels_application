@@ -1,13 +1,14 @@
 import { Types } from 'mongoose';
 import { CreateBookingDto } from '../dto/create-booking.dto';
-import { User } from 'src/users/interfaces/interfaces';
-import { Room } from 'src/hotels/interfaces/interfaces';
+import { User } from '../../users/interfaces/interfaces';
+import { Room } from '../../hotels/interfaces/interfaces';
+import { Hotel } from 'src/hotels/interfaces/interfaces';
 
 export interface ReservationDto {
   _id?: Types.ObjectId;
-  userId: Types.ObjectId;
-  roomId: Types.ObjectId;
-  hotelId: Types.ObjectId;
+  userId: User;
+  roomId: Room;
+  hotelId: Hotel;
   dateStart: Date;
   dateEnd: Date;
 }
