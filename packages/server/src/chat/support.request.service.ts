@@ -58,7 +58,7 @@ export class SupportRequestService implements ISupportRequestService {
   }
 
   async findSupportRequestById(
-    supportRequest: Types.ObjectId,
+    supportRequest: Types.ObjectId | string,
   ): Promise<ISupportRequest> {
     try {
       return await this.supportRequestModel
