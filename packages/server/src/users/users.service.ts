@@ -37,7 +37,7 @@ export class UsersService implements IUserService {
     } catch (err) {
       throw new ConflictException({
         status: err.response.status,
-        description: err.response.description,
+        message: err.response.description,
       });
     }
   }
@@ -49,7 +49,7 @@ export class UsersService implements IUserService {
     } catch (err) {
       throw new InternalServerErrorException({
         status: err.response.status,
-        description: err.response.description,
+        message: err.response.description,
       });
     }
   }
@@ -60,7 +60,7 @@ export class UsersService implements IUserService {
     } catch (err) {
       throw new InternalServerErrorException({
         status: err.response.status,
-        description: err.response.description,
+        message: err.response.description,
       });
     }
   }
@@ -91,7 +91,7 @@ export class UsersService implements IUserService {
     } catch (err) {
       throw new InternalServerErrorException({
         status: err.response.status,
-        description: err.response.description,
+        message: err.response.description,
       });
     }
   }

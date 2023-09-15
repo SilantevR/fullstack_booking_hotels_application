@@ -7,7 +7,7 @@ import {
   Post,
   Body,
   ValidationPipe,
-  ConflictException,
+  Get,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInUserDto } from './dto/sign-in-user.dto';
@@ -25,32 +25,15 @@ export class AuthController {
   ) {}
 
   @Auth(AuthType.None)
-  @Post('/client/register/')
-  async create(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
-    try {
-      const user = await this.usersService.create(createUserDto);
-      return {
-        name: user.name,
-        id: user.id,
-        email: user.email,
-      };
-    } catch (err) {
-      throw new ConflictException({
-        status: err.response.status,
-        description: err.response.description,
-      });
-    }
-  }
-
-  @Auth(AuthType.None)
   @HttpCode(HttpStatus.OK)
-  @Post('/auth/login/')
-  async find(
+  @Post('/client/register/')
+  async create(
     @Res({ passthrough: true }) response: Response,
-    @Body(new ValidationPipe()) signInUserDto: SignInUserDto,
+    @Body(new ValidationPipe()) createUserDto: CreateUserDto,
   ) {
-    const { accessToken, refreshToken } = await this.authService.find(
-      signInUserDto,
+    const user = await this.usersService.create(createUserDto);
+    const { accessToken, refreshToken } = await this.authService.generateTokens(
+      user,
     );
     response.cookie('accessToken', accessToken, {
       secure: true,
@@ -62,21 +45,72 @@ export class AuthController {
       httpOnly: true,
       sameSite: true,
     });
-    //return {accessToken, refreshToken};
+
+    return {
+      name: user.name,
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
+  }
+
+  @Auth(AuthType.None)
+  @HttpCode(HttpStatus.OK)
+  @Post('/auth/login/')
+  async find(
+    @Res({ passthrough: true }) response: Response,
+    @Body(new ValidationPipe()) signInUserDto: SignInUserDto,
+  ) {
+    const { tokens, user } = await this.authService.find(signInUserDto);
+
+    response.cookie('accessToken', tokens.accessToken, {
+      secure: true,
+      httpOnly: true,
+      sameSite: true,
+    });
+    response.cookie('refreshToken', tokens.refreshToken, {
+      secure: true,
+      httpOnly: true,
+      sameSite: true,
+    });
+    return {
+      name: user.name,
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
   }
 
   @HttpCode(HttpStatus.OK)
+  @Get('/auth/user')
+  async findUserByToken(@Req() request: Request) {
+    const user = await this.authService.findUserByToken(request.cookies);
+
+    return {
+      name: user.name,
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
+  }
+
+  @Auth(AuthType.None)
+  @HttpCode(HttpStatus.OK)
   @Post('/auth/logout/')
-  async logout(@Res() response: Response, @Req() request: Request) {
-    console.log(request.cookies);
+  async logout(
+    @Res({ passthrough: true }) response: Response,
+    @Req() request: Request,
+  ) {
     response.clearCookie('accessToken', {
       path: '/',
+      domain: 'localhost',
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
     });
     response.clearCookie('refreshToken', {
       path: '/',
+      domain: 'localhost',
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
@@ -84,6 +118,7 @@ export class AuthController {
     return;
   }
 
+  @Auth(AuthType.None)
   @HttpCode(HttpStatus.OK)
   @Post('/auth/refresh/')
   async refresh(
@@ -103,6 +138,6 @@ export class AuthController {
       httpOnly: true,
       sameSite: true,
     });
-    //return {accessToken, refreshToken};
+    return;
   }
 }

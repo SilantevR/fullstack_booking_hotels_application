@@ -1,4 +1,9 @@
-import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import { User } from 'src/users/schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -46,12 +51,13 @@ export class AuthService {
           });
         }
         await this.tokensService.invalidate(user.id);
-        return this.generateTokens(user);
+        const tokens = await this.generateTokens(user);
+        return { tokens, user: user };
       }
     } catch (err) {
-      throw new UnauthorizedException({
+      throw new BadRequestException({
         status: err.response.status,
-        description: err.response.description,
+        message: err.response.description,
       });
     }
   }
@@ -71,6 +77,18 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
+  async findUserByToken(tokens: Record<string, string>) {
+    try {
+      const payload = await this.jwtService.verifyAsync(
+        tokens.accessToken,
+        this.jwtConfiguration,
+      );
+      return await this.usersService.findById(payload.sub);
+    } catch (err) {
+      throw new UnauthorizedException('Пожалуйста, авторизуйтесь');
+    }
+  }
+
   async refreshTokens(refreshToken: string) {
     try {
       const { sub, refreshTokenId } = await this.jwtService.verifyAsync<
@@ -81,7 +99,6 @@ export class AuthService {
         issuer: this.jwtConfiguration.issuer,
       });
       const user = await this.userModel.findById(sub).exec();
-
       if (user) {
         const isValid = await this.tokensService.validate(
           user.id,
@@ -105,8 +122,8 @@ export class AuthService {
       }
     } catch (err) {
       throw new UnauthorizedException({
-        status: err.response.status,
-        description: err.response.description,
+        status: 'fail',
+        message: err.response,
       });
     }
   }

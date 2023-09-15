@@ -12,11 +12,13 @@ export class TokensService {
   }
 
   async validate(userId: string, tokenId: string): Promise<boolean> {
-    const stored = await this.tokenModel.findOne({ user: userId }).exec();
-    return tokenId === stored.tokenId;
+    const stored = await this.tokenModel.find({ user: userId }).exec();
+    return stored.some((token) => {
+      return token.tokenId === tokenId;
+    });
   }
 
   async invalidate(userId: string): Promise<void> {
-    await this.tokenModel.findOneAndRemove({ user: userId }).exec();
+    await this.tokenModel.deleteMany({ user: userId }).exec();
   }
 }
