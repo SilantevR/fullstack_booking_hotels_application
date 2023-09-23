@@ -14,7 +14,7 @@ export const useSignUpSubmit = () => {
     signup(data)
       .then((response) => {
         if (response.status === 200) {
-          //set(fetchGetUser())
+          set(fetchGetUser());
           navigate(RoutesEnum.Profile);
         } else {
           return response.json();

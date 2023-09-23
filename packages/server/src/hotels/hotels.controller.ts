@@ -99,11 +99,12 @@ export class HotelsController {
   @Get('/common/hotel-rooms')
   search(
     @ActiveUser('role') role: ActiveUserData['role'],
-    @Query('hotel') hotel?: Types.ObjectId,
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
+    @Query('hotel') hotel?: string,
     @Query('limit') limit?: string,
     @Query('offset') offset?: string,
   ) {
-    console.log(role);
     let isEnabled = false;
 
     if (!role || role === 'client') {
@@ -113,8 +114,10 @@ export class HotelsController {
     return this.roomsService.search({
       limit: limit ? Number(limit) : 10,
       offset: offset ? Number(offset) : 0,
-      hotel,
+      hotel: hotel,
       isEnabled,
+      startDate,
+      endDate,
     });
   }
 

@@ -18,6 +18,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { TokensService } from '../auth/tokens.service';
 import { HotelSchema, Hotel } from '../hotels/schemas/hotel.schema';
+import { HotelsModule } from 'src/hotels/hotels.module';
+import { forwardRef } from '@nestjs/common';
 
 @Module({
   imports: [
@@ -28,6 +30,7 @@ import { HotelSchema, Hotel } from '../hotels/schemas/hotel.schema';
     MongooseModule.forFeature([{ name: Hotel.name, schema: HotelSchema }]),
     JwtModule.registerAsync(jwtConfig.asProvider()),
     ConfigModule.forFeature(jwtConfig),
+    forwardRef(() => HotelsModule),
   ],
   controllers: [BookingController],
   providers: [
@@ -43,5 +46,6 @@ import { HotelSchema, Hotel } from '../hotels/schemas/hotel.schema';
       useClass: BcryptService,
     },
   ],
+  exports: [BookingService],
 })
 export class BookingModule {}

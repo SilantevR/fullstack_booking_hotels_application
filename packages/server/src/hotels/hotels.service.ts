@@ -5,7 +5,11 @@ import { RoomsService } from './rooms.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Hotel } from './schemas/hotel.schema';
 import { Model, Types } from 'mongoose';
-import { IHotelService, SearchHotelParams } from './interfaces/interfaces';
+import {
+  IHotelService,
+  QueryParams,
+  SearchHotelParams,
+} from './interfaces/interfaces';
 
 @Injectable()
 export class HotelsService implements IHotelService {
@@ -45,10 +49,16 @@ export class HotelsService implements IHotelService {
   }
 
   async search(params: SearchHotelParams) {
-    const { limit, offset } = params;
+    const { limit, offset, title } = params;
     try {
+      let query: QueryParams = {};
+      if (title) {
+        const regexp = new RegExp(title);
+        query['title'] = { $regex: regexp, $options: 'ig' };
+      }
+
       return await this.hotelModel
-        .find()
+        .find(query)
         .skip(offset)
         .limit(limit)
         .select(['-__v'])

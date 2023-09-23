@@ -22,13 +22,16 @@ export interface Room {
 }
 
 export interface SearchHotelParams {
-  limit: number;
-  offset: number;
+  limit?: number;
+  offset?: number;
   title?: string;
 }
 export interface QueryParams {
-  hotel?: Types.ObjectId;
+  title?: any;
   isEnabled?: boolean;
+  hotel?: {
+    _id: string;
+  };
 }
 
 export interface UpdateHotelParams {
@@ -46,8 +49,10 @@ export interface IHotelService {
 export interface SearchRoomsParams {
   limit: number;
   offset: number;
-  hotel: Types.ObjectId;
+  hotel: string;
   isEnabled?: boolean;
+  startDate: string;
+  endDate: string;
 }
 
 export interface HotelRoomService {

@@ -35,7 +35,7 @@ export class AuthService {
       const user = await this.usersService.findByEmail(signInUserDto.email);
 
       if (!user) {
-        throw new UnauthorizedException({
+        throw new BadRequestException({
           status: 'fail',
           description: 'Неправильный email',
         });
@@ -45,7 +45,7 @@ export class AuthService {
           user.password,
         );
         if (!isEqual) {
-          throw new UnauthorizedException({
+          throw new BadRequestException({
             status: 'fail',
             description: 'Неправильный пароль',
           });

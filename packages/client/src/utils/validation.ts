@@ -22,6 +22,17 @@ export const validateName = {
   },
 };
 
+export const validateHotel = {
+  pattern: {
+    value: /^[A-Za-zА-Яа-я-]/i,
+    message: "⚠ Значение введено неверно",
+  },
+  maxLength: {
+    value: 20,
+    message: "⚠ Значение больше 20 символов",
+  },
+};
+
 export const validatePhone = {
   required: "⚠ Поле не может быть пустым",
   pattern: {

@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { ListProfile } from "./ListProfile";
 import { styles } from "../styles/styles";
 import { logout } from "../services/LogOut";
-import { getUser, clearUser } from "../services/authSlice";
+import { clearUser } from "../services/authSlice";
 import { RoutesEnum } from "../../../app/router/types";
-import { useStore, useSet } from "../../../app/store/hooks";
-import { UserInformation } from "../types";
+import { useSet } from "../../../app/store/hooks";
+
 import { UserContext } from "../../../components/requireAuth/RequireAuth";
 
 export const Profile: React.FC = () => {
@@ -39,7 +39,6 @@ export const Profile: React.FC = () => {
           >
             {user?.data?.name}
           </Typography>
-          ;
           <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
             <ListProfile label="ID" defaultVal={user?.data?.id} />
             <ListProfile label="Почта" defaultVal={user?.data?.email} />

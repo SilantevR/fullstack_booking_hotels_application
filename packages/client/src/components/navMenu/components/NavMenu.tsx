@@ -3,31 +3,33 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Avatar,
   Typography,
-} from '@mui/material'
+} from "@mui/material";
 import {
-  SportsEsports,
+  AccountCircle,
+  TravelExplore,
   Chat,
-  Leaderboard,
+  Book,
   MeetingRoom,
   HowToReg,
-} from '@mui/icons-material'
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import { RoutesEnum } from '../../../app/router/types'
-import { useStore } from '../../../app/store/hooks'
-import { getUser } from '../../../features/profile/services/authSlice'
-import { BASE_URL } from '../../../app/api/variables'
-import { RouterLinkProps, MyNavLinkProps } from '../types'
+  AddBusiness,
+  OtherHouses,
+  ConnectWithoutContact,
+  PeopleAlt,
+} from "@mui/icons-material";
+import React, { useContext } from "react";
+import { NavLink } from "react-router-dom";
+import { RoutesEnum } from "../../../app/router/types";
+import { RouterLinkProps, MyNavLinkProps } from "../types";
+import { UserContext } from "../../../components/requireAuth/RequireAuth";
 
-const RouterLink: React.FC<RouterLinkProps> = props => {
+const RouterLink: React.FC<RouterLinkProps> = (props) => {
   const MyNavLink = React.useMemo(
     () =>
       React.forwardRef<HTMLAnchorElement, MyNavLinkProps>(
         (navLinkProps, ref) => {
-          const { className: previousClasses, ...rest } = navLinkProps
-          const elementClasses = previousClasses?.toString() ?? ''
+          const { className: previousClasses, ...rest } = navLinkProps;
+          const elementClasses = previousClasses?.toString() ?? "";
           return (
             <NavLink
               {...rest}
@@ -35,61 +37,62 @@ const RouterLink: React.FC<RouterLinkProps> = props => {
               to={props.to}
               end
               className={({ isActive }) =>
-                isActive ? elementClasses + ' Mui-selected' : elementClasses
+                isActive ? elementClasses + " Mui-selected" : elementClasses
               }
             />
-          )
+          );
         }
       ),
     [props.to]
-  )
+  );
   return (
     <ListItemButton component={MyNavLink}>
       <ListItemIcon
         sx={{
-          '.MuiListItemButton-root > &': {
-            color: 'primary',
+          ".MuiListItemButton-root > &": {
+            color: "primary",
           },
-          '.Mui-selected > &': { color: 'orange' },
-        }}>
+          ".Mui-selected > &": { color: "orange" },
+        }}
+      >
         {props.icon}
       </ListItemIcon>
 
       <ListItemText
         sx={{
-          '.Mui-selected > &': { textDecoration: 'underline' },
-        }}>
+          ".Mui-selected > &": { textDecoration: "underline" },
+        }}
+      >
         <Typography color="primary">{props.text}</Typography>
       </ListItemText>
     </ListItemButton>
-  )
-}
+  );
+};
 
 export const NavMenu: React.FC = () => {
-  const user = useStore(getUser)
+  const user = useContext(UserContext);
 
   return (
     <List
       sx={{
-        display: 'flex',
-        '& > .MuiListItemButton-root': {
-          color: 'primary',
+        display: "flex",
+        flexDirection: "column",
+        maxHeight: "500px",
+        maxWidth: "300px",
+        "& > .MuiListItemButton-root": {
+          color: "primary",
         },
-        '& > .Mui-selected': { color: 'orange' },
-      }}>
-      <RouterLink to={RoutesEnum.Game} text="Играть" icon={<SportsEsports />} />
-      <RouterLink to={RoutesEnum.Forums} text="Форум" icon={<Chat />} />
+        "& > .Mui-selected": { color: "orange" },
+      }}
+    >
       <RouterLink
-        to={RoutesEnum.Leaderboard}
-        text="Таблица лидеров"
-        icon={<Leaderboard />}
+        to={RoutesEnum.Search}
+        text="Найти номер"
+        icon={<TravelExplore />}
       />
+
       {user.data ? (
-        <RouterLink
-          to={RoutesEnum.Profile}
-          text="Профиль"
-          icon={<Avatar src={`${BASE_URL}/resources/${user?.data?.avatar}`} />}
-        />
+        <></>
       ) : (
         <>
           <RouterLink
@@ -104,6 +107,55 @@ export const NavMenu: React.FC = () => {
           />
         </>
       )}
+
+      {user.data?.role === "client" ? (
+        <>
+          <RouterLink
+            to={RoutesEnum.Bookings}
+            text="Бронирования"
+            icon={<Book />}
+          />
+          <RouterLink
+            to={RoutesEnum.SupportRequests}
+            text="Техподдержка"
+            icon={<ConnectWithoutContact />}
+          />
+          <RouterLink
+            to={RoutesEnum.Profile}
+            text="Профиль"
+            icon={<AccountCircle />}
+          />
+        </>
+      ) : (
+        <></>
+      )}
+
+      {user.data?.role === "admin" ? (
+        <>
+          <RouterLink
+            to={RoutesEnum.AddHotel}
+            text="Добавить гостиницу"
+            icon={<AddBusiness />}
+          />
+          <RouterLink
+            to={RoutesEnum.Hotels}
+            text="Все гостиницы"
+            icon={<OtherHouses />}
+          />
+          <RouterLink
+            to={RoutesEnum.Users}
+            text="Пользователи"
+            icon={<PeopleAlt />}
+          />
+          <RouterLink
+            to={RoutesEnum.Profile}
+            text="Профиль"
+            icon={<AccountCircle />}
+          />
+        </>
+      ) : (
+        <></>
+      )}
     </List>
-  )
-}
+  );
+};

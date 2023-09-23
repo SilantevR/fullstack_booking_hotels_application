@@ -1,7 +1,8 @@
-import { UsersService } from '../users/users.service';
 import {
   ConflictException,
   Injectable,
+  Inject,
+  forwardRef,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { CreateBookingDto } from './dto/create-booking.dto';
@@ -20,7 +21,7 @@ import { CheckBooking } from './check.booking';
 export class BookingService implements IReservation {
   constructor(
     @InjectModel(Booking.name) private bookingModel: Model<Booking>,
-    private readonly usersService: UsersService,
+    @Inject(forwardRef(() => RoomsService))
     private readonly roomsService: RoomsService,
     private readonly checkBooking: CheckBooking,
   ) {}
@@ -38,18 +39,13 @@ export class BookingService implements IReservation {
             description: 'Номер не доступен',
           });
         }
-        const bookings = await this.bookingModel
-          .find({
-            roomId: room._id,
-          })
-          .select(['-__v'])
-          .exec();
-        const IsRoomUnawailable = bookings.some((existBooking) => {
-          return (
-            this.checkBooking.check(createBokingDto.startDate, existBooking) ||
-            this.checkBooking.check(createBokingDto.endDate, existBooking)
-          );
-        });
+
+        const IsRoomUnawailable = await this.checkReservation(
+          createBokingDto.hotelRoom,
+          createBokingDto.startDate,
+          createBokingDto.endDate,
+        );
+
         if (IsRoomUnawailable) {
           throw new ConflictException({
             status: 'fail',
@@ -88,6 +84,25 @@ export class BookingService implements IReservation {
         description: err.message,
       });
     }
+  }
+
+  async checkReservation(
+    id: Types.ObjectId,
+    dateStart: string,
+    dateEnd: string,
+  ): Promise<boolean> {
+    const bookings = await this.bookingModel
+      .find({
+        roomId: id,
+      })
+      .select(['-__v'])
+      .exec();
+    return bookings.some((existBooking) => {
+      return (
+        this.checkBooking.check(dateStart, existBooking) ||
+        this.checkBooking.check(dateEnd, existBooking)
+      );
+    });
   }
 
   async removeReservation(id: Types.ObjectId): Promise<void> {

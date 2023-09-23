@@ -53,7 +53,7 @@ export const SignIn: React.FC = () => {
         marginTop: "auto",
         boxSizing: "border-box",
         display: "flex",
-        flexWrap: "wrap",
+        flexDirection: "column",
         gap: "10px",
         justifyContent: "center",
         alignItems: "center",
@@ -80,7 +80,12 @@ export const SignIn: React.FC = () => {
       </FormHelperText>
 
       <form
-        style={{ display: "flex", gap: "10px", flexGrow: 1 }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          flexGrow: 1,
+        }}
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input
@@ -104,19 +109,19 @@ export const SignIn: React.FC = () => {
         <Button type="submit" fullWidth variant="contained" sx={styles.button}>
           Войти
         </Button>
-      </form>
 
-      <MuiLink
-        color="#fff"
-        component={RouterLink}
-        to={RoutesEnum.SignUp}
-        type="button"
-        variant="button"
-        underline="none"
-        sx={styles.link}
-      >
-        Зарегистрироваться
-      </MuiLink>
+        <MuiLink
+          color="#fff"
+          component={RouterLink}
+          to={RoutesEnum.SignUp}
+          type="button"
+          variant="button"
+          underline="none"
+          sx={styles.link}
+        >
+          Зарегистрироваться
+        </MuiLink>
+      </form>
     </Box>
   );
 };
