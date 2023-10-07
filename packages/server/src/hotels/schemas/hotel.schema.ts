@@ -12,6 +12,8 @@ export class Hotel {
   createdAt: Date;
   @Prop({ required: true, default: new Date() })
   updatedAt: Date;
+  @Prop({ default: [] })
+  images?: string[];
 }
 
 export const HotelSchema = SchemaFactory.createForClass(Hotel);

@@ -33,8 +33,8 @@ export const DefaultDateRanges = [
   {
     label: "Следующая неделя",
     range: () => ({
-      startDate: startOfWeek(addDays(new Date(), +8), { weekStartsOn: 1 }),
-      endDate: endOfWeek(addDays(new Date(), +8), { weekStartsOn: 1 }),
+      startDate: startOfWeek(addDays(new Date(), +7), { weekStartsOn: 1 }),
+      endDate: endOfWeek(addDays(new Date(), +7), { weekStartsOn: 1 }),
     }),
     isSelected(range: DateRange) {
       const definedRange = this.range();
@@ -50,7 +50,7 @@ export const DefaultDateRanges = [
   {
     label: "Следующие 2 недели",
     range: () => ({
-      startDate: startOfWeek(addDays(new Date(), +8), { weekStartsOn: 1 }),
+      startDate: startOfWeek(addDays(new Date(), +7), { weekStartsOn: 1 }),
       endDate: endOfWeek(addDays(new Date(), +14), { weekStartsOn: 1 }),
     }),
     isSelected(range: DateRange) {

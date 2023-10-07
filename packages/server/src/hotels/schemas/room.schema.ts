@@ -9,8 +9,8 @@ export class Room {
   title: string;
   @Prop()
   description: string;
-  @Prop({ required: true, default: [] })
-  images: string[];
+  @Prop({ default: [] })
+  images?: string[];
   @Prop({ required: true, default: true })
   isEnabled: boolean;
   @Prop({ required: true })

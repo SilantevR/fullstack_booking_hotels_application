@@ -37,13 +37,16 @@ export interface MarkMessagesAsReadDto {
 
 export interface GetChatListParams {
   user: Types.ObjectId | null;
+  activeUser: Types.ObjectId;
   isActive: boolean;
   limit: number;
   offset: number;
 }
 
 export interface ISupportRequestService {
-  findSupportRequests(params: GetChatListParams): Promise<SupportRequest[]>;
+  findSupportRequests(
+    params: GetChatListParams,
+  ): Promise<{ count: number; result: SupportRequest[] }>;
   sendMessage(data: SendMessageDto): Promise<Message>;
   getMessages(supportRequest: Types.ObjectId): Promise<Message[]>;
   /*Реализовано за счет функционала комнат библиотеки soket.io в chat.gateway.ts

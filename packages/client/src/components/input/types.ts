@@ -21,6 +21,8 @@ export interface Inputs {
   };
   errors: DeepMap<FieldValues, FieldError>;
   label: string;
+  value?: string;
+  multiline?: boolean;
   handleShow?: boolean;
   handleClick?: () => void;
   handleMouseDown?: (event: React.MouseEvent<HTMLButtonElement>) => void;

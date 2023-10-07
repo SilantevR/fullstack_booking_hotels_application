@@ -77,10 +77,10 @@ export const NavMenu: React.FC = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        maxHeight: "500px",
-        maxWidth: "300px",
+        height: "300px",
+        width: "300px",
         "& > .MuiListItemButton-root": {
-          color: "primary",
+          color: "blue",
         },
         "& > .Mui-selected": { color: "orange" },
       }}
@@ -111,7 +111,7 @@ export const NavMenu: React.FC = () => {
       {user.data?.role === "client" ? (
         <>
           <RouterLink
-            to={RoutesEnum.Bookings}
+            to={RoutesEnum.ClientBookings}
             text="Бронирования"
             icon={<Book />}
           />
@@ -119,6 +119,33 @@ export const NavMenu: React.FC = () => {
             to={RoutesEnum.SupportRequests}
             text="Техподдержка"
             icon={<ConnectWithoutContact />}
+          />
+          <RouterLink
+            to={RoutesEnum.Profile}
+            text="Профиль"
+            icon={<AccountCircle />}
+          />
+        </>
+      ) : (
+        <></>
+      )}
+
+      {user.data?.role === "manager" ? (
+        <>
+          <RouterLink
+            to={RoutesEnum.ManagerBookingsSearch}
+            text="Поиск бронирований"
+            icon={<AddBusiness />}
+          />
+          <RouterLink
+            to={RoutesEnum.ManagersSupportRequestsBoard}
+            text="Обращения в техподдержку"
+            icon={<OtherHouses />}
+          />
+          <RouterLink
+            to={RoutesEnum.ManagerUsersSearch}
+            text="Пользователи"
+            icon={<PeopleAlt />}
           />
           <RouterLink
             to={RoutesEnum.Profile}

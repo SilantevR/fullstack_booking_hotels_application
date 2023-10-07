@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Container, Box, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ListProfile } from "./ListProfile";
-import { styles } from "../styles/styles";
+import { styles } from "../../../styles";
 import { logout } from "../services/LogOut";
 import { clearUser } from "../services/authSlice";
 import { RoutesEnum } from "../../../app/router/types";
@@ -30,12 +30,11 @@ export const Profile: React.FC = () => {
       <Container component="main" maxWidth="md">
         <Box sx={styles.boxMain}>
           <Typography
-            variant="h4"
+            variant="h5"
             sx={{
               fontWeight: "bolder",
             }}
             align="center"
-            color="primary"
           >
             {user?.data?.name}
           </Typography>

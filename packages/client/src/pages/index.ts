@@ -1,3 +1,7 @@
+import { ManagersSupportRequestsPage } from "./ManagersSupportRequestsPage";
+import { ManagersBookingsSearchPage } from "./ManagersBookingsSearchPage";
+import { ManagersUsersSearchPage } from "./ManagersUsersSearchPage";
+import { AdminUsersPage } from "./AdminUsersPage";
 import { HotelPage } from "./HotelPage";
 import { NotFoundPage } from "./NotFoundPage";
 import { ProfilePage } from "./ProfilePage";
@@ -7,14 +11,13 @@ import { SignUpPage } from "./SignUpPage";
 import { SearchPage } from "./SearchPage";
 import { RoomPage } from "./RoomPage";
 import { AddHotelPage } from "./AddHotelPage";
-import { EditHotelPage } from "./EditHotelPage";
 import { SearchHotelsPage } from "./SearchHotelsPage";
 import { AddRoomPage } from "./AddRoomPage";
-import { EditRoomPage } from "./EditRoomPage";
-import { UsersPage } from "./UsersPage";
-import { BookingsPage } from "./BookingsPage";
+import { ClientBookingsPage } from "./ClientBookingsPage";
 import { SupportRequestPage } from "./SupportRequestPage";
-import { SearchSupportRequestPage } from "./SerachSupportRequestsPage";
+import { SearchSupportRequestPage } from "./ClientSupportRequestsPage";
+import { AddUserByAdminPage } from "./AddUserByAdmin";
+import { CreateSupportRequestPage } from "./CreateSupportRequestPage";
 
 export {
   SignInPage,
@@ -25,13 +28,16 @@ export {
   SearchPage,
   RoomPage,
   AddHotelPage,
-  EditHotelPage,
   SearchHotelsPage,
   HotelPage,
   AddRoomPage,
-  EditRoomPage,
-  UsersPage,
-  BookingsPage,
+  ClientBookingsPage,
   SupportRequestPage,
   SearchSupportRequestPage,
+  AddUserByAdminPage,
+  AdminUsersPage,
+  ManagersBookingsSearchPage,
+  ManagersSupportRequestsPage,
+  ManagersUsersSearchPage,
+  CreateSupportRequestPage,
 };

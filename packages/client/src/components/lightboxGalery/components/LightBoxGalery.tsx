@@ -19,6 +19,7 @@ import {
   StarBorder,
 } from "@mui/icons-material";
 import { useMediaQuery, useTheme } from "@mui/material";
+import { LightBox } from "./LightBox";
 
 function srcset(
   image: string,
@@ -44,35 +45,8 @@ export const LightBoxGalery: React.FC<lightBoxGaleryProps> = ({ images }) => {
   });
 
   const openLightbox = (index: number) => {
-    console.log("open");
     setState({
       currentImage: index,
-      lightBoxIsOpen: true,
-    });
-  };
-  const closeLightbox = () => {
-    setState({
-      currentImage: 0,
-      lightBoxIsOpen: false,
-    });
-  };
-  const gotoPrevious = () => {
-    let previousIndex: number = Number(state.currentImage) - 1;
-    if (previousIndex <= 0) {
-      previousIndex = images.length - 1;
-    }
-    setState({
-      currentImage: previousIndex,
-      lightBoxIsOpen: true,
-    });
-  };
-  const gotoNext = () => {
-    let nextIndex: number = Number(state.currentImage) + 1;
-    if (nextIndex >= images.length) {
-      nextIndex = 0;
-    }
-    setState({
-      currentImage: nextIndex,
       lightBoxIsOpen: true,
     });
   };
@@ -117,51 +91,12 @@ export const LightBoxGalery: React.FC<lightBoxGaleryProps> = ({ images }) => {
         })}
       </ImageList>
 
-      <Dialog
-        maxWidth={"xl"}
-        open={state.lightBoxIsOpen}
-        onClose={closeLightbox}
-      >
-        <Container
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Close
-            sx={{ alignSelf: "end", cursor: "pointer" }}
-            onClick={closeLightbox}
-          />
-          <Box>
-            <ArrowBack
-              sx={{
-                color: "#1976d2",
-                position: "absolute",
-                top: "50%",
-                left: "0",
-                cursor: "pointer",
-              }}
-              onClick={gotoPrevious}
-            />
-
-            <ArrowForward
-              sx={{
-                color: "#1976d2",
-                position: "absolute",
-                top: "50%",
-                right: "0",
-                cursor: "pointer",
-              }}
-              onClick={gotoNext}
-            />
-          </Box>
-          <img
-            {...srcset(images[state.currentImage], 2000, 1800)}
-            alt="фото комнаты"
-            loading="lazy"
-          />
-        </Container>
-      </Dialog>
+      <LightBox
+        images={images}
+        state={state}
+        setState={setState}
+        url={`http://localhost:5000/`}
+      />
     </>
   );
 };

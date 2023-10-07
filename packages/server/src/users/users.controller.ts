@@ -22,6 +22,7 @@ import { Role } from '../auth/enums/role.enum';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @HttpCode(HttpStatus.OK)
   @Roles(Role.Admin)
   @Post('/admin/users/')
   async createByAdmin(
@@ -44,6 +45,7 @@ export class UsersController {
     }
   }
 
+  @Roles(Role.Admin)
   @Get('/admin/users/')
   async findAUsers(
     @Query('email') email?: string,
@@ -62,6 +64,7 @@ export class UsersController {
     return await this.usersService.findAll(params);
   }
 
+  @Roles(Role.Manager)
   @Get('/manager/users/')
   async findMUsers(
     @Query('email') email?: string,

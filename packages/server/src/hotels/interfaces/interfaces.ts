@@ -6,6 +6,7 @@ export interface Hotel {
   _id?: Types.ObjectId;
   title: string;
   description: string;
+  images?: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -14,7 +15,7 @@ export interface Room {
   id?: Types.ObjectId;
   title: string;
   description: string;
-  images: string[];
+  images?: string[];
   isEnabled: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -37,19 +38,33 @@ export interface QueryParams {
 export interface UpdateHotelParams {
   title: string;
   description: string;
+  images?: string[];
+}
+
+export interface UpdateRoomParams {
+  title: string;
+  description: string;
+  isEnabled: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  hotel: Hotel;
+  images?: string[];
 }
 
 export interface IHotelService {
   create(data: any): Promise<Hotel>;
   findById(id: Types.ObjectId): Promise<Hotel>;
-  search(params: SearchHotelParams): Promise<Hotel[]>;
+  search(
+    params: SearchHotelParams,
+  ): Promise<{ count: number; hotels: Hotel[] }>;
   update(id: Types.ObjectId, data: UpdateHotelParams): Promise<Hotel>;
 }
 
 export interface SearchRoomsParams {
   limit: number;
   offset: number;
-  hotel: string;
+  hotel?: string;
+  title?: string;
   isEnabled?: boolean;
   startDate: string;
   endDate: string;
@@ -58,6 +73,6 @@ export interface SearchRoomsParams {
 export interface HotelRoomService {
   create(data: CreateRoomDto): Promise<Room>;
   findById(id: Types.ObjectId): Promise<Room>;
-  search(params: SearchRoomsParams): Promise<Room[]>;
-  update(id: Types.ObjectId, data: UpdateRoomDto): Promise<Room>;
+  search(params: SearchRoomsParams): Promise<{ count: number; result: Room[] }>;
+  update(id: Types.ObjectId, data: UpdateRoomParams): Promise<Room>;
 }

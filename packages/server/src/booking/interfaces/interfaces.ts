@@ -29,8 +29,8 @@ export interface Reservation {
 
 export interface ReservationSearchOptions {
   userId: Types.ObjectId;
-  dateStart: Date;
-  dateEnd: Date;
+  dateStart?: Date;
+  dateEnd?: Date;
 }
 export interface IReservation {
   addReservation(

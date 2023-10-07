@@ -14,6 +14,8 @@ export class SupportRequest {
   isActive: boolean;
   @Prop({ type: [SchemaTypes.ObjectId], ref: 'Message' })
   messages: Message[];
+  @Prop()
+  hasNewMessages: boolean;
 }
 
 export const SupportRequestSchema =

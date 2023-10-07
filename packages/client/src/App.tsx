@@ -11,15 +11,18 @@ import {
   SearchHotelsPage,
   SearchPage,
   AddHotelPage,
-  EditHotelPage,
   RoomPage,
   HotelPage,
-  UsersPage,
+  AddUserByAdminPage,
   AddRoomPage,
-  EditRoomPage,
-  BookingsPage,
+  ClientBookingsPage,
   SupportRequestPage,
   SearchSupportRequestPage,
+  AdminUsersPage,
+  ManagersSupportRequestsPage,
+  ManagersUsersSearchPage,
+  ManagersBookingsSearchPage,
+  CreateSupportRequestPage,
 } from "./pages";
 import { NavMenu } from "./components/navMenu/components/NavMenu";
 import { Container, Box } from "@mui/material";
@@ -45,27 +48,49 @@ function App() {
                 path={RoutesEnum.Room + RoutesEnum.Id}
                 element={<RoomPage />}
               />
-              <Route path={RoutesEnum.AddRoom} element={<AddRoomPage />} />
-              <Route path={RoutesEnum.EditRoom} element={<EditRoomPage />} />
+              <Route
+                path={RoutesEnum.AddRoom + RoutesEnum.Id}
+                element={<AddRoomPage />}
+              />
               <Route path={RoutesEnum.Hotels} element={<SearchHotelsPage />} />
               <Route path={RoutesEnum.AddHotel} element={<AddHotelPage />} />
-              <Route
-                path={RoutesEnum.EditHotel + RoutesEnum.Id}
-                element={<EditHotelPage />}
-              />
+
               <Route
                 path={RoutesEnum.Hotel + RoutesEnum.Id}
                 element={<HotelPage />}
               />
-              <Route path={RoutesEnum.Users} element={<UsersPage />} />
-              <Route path={RoutesEnum.Bookings} element={<BookingsPage />} />
+              <Route path={RoutesEnum.Users} element={<AdminUsersPage />} />
               <Route
-                path={RoutesEnum.SupportRequest}
-                element={<SupportRequestPage /> + RoutesEnum.Id}
+                path={RoutesEnum.AddUser}
+                element={<AddUserByAdminPage />}
+              />
+              <Route
+                path={RoutesEnum.ClientBookings}
+                element={<ClientBookingsPage />}
+              />
+              <Route
+                path={RoutesEnum.SupportRequest + RoutesEnum.Id}
+                element={<SupportRequestPage />}
               />
               <Route
                 path={RoutesEnum.SupportRequests}
                 element={<SearchSupportRequestPage />}
+              />
+              <Route
+                path={RoutesEnum.CreateSupportRequest}
+                element={<CreateSupportRequestPage />}
+              />
+              <Route
+                path={RoutesEnum.ManagerBookingsSearch}
+                element={<ManagersBookingsSearchPage />}
+              />
+              <Route
+                path={RoutesEnum.ManagerUsersSearch}
+                element={<ManagersUsersSearchPage />}
+              />
+              <Route
+                path={RoutesEnum.ManagersSupportRequestsBoard}
+                element={<ManagersSupportRequestsPage />}
               />
             </Routes>
           </Box>

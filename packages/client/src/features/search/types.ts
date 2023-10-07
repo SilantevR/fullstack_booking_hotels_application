@@ -1,3 +1,4 @@
+import { RoomData } from "../room/types";
 export interface SearchData {
   hotel: string;
 }
@@ -7,8 +8,8 @@ export interface SearchDates {
 }
 
 export interface DateRange {
-  startDate?: Date;
-  endDate?: Date;
+  startDate: Date;
+  endDate: Date;
   key?: string;
 }
 
@@ -16,24 +17,12 @@ export interface URL {
   url: string;
 }
 
-export interface SearchResult {
-  _id: string;
-  title: string;
-  description: string;
-  images: string[];
-  isEnabled: true;
-  createdAt: string;
-  updatedAt: string;
-  hotel?: {
-    _id: string;
-    title: string;
-    description: string;
-  };
-}
 export interface SearchResults {
-  results: SearchResult[];
+  results: RoomData[];
+  dates?: SearchDates;
 }
 export interface ResultItem {
-  result: SearchResult;
+  result: RoomData;
+  dates?: SearchDates;
   key: string;
 }

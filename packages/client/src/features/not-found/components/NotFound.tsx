@@ -2,7 +2,7 @@ import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { NotFoundTypes } from '../types'
 import { Typography, Container, Box, Link as MuiLink } from '@mui/material'
-import { styles } from '../../profile/styles/styles'
+import { styles } from '../../../styles'
 
 export const NotFound: React.FC<NotFoundTypes> = ({
   title,

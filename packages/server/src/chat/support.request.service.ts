@@ -24,7 +24,7 @@ export class SupportRequestService implements ISupportRequestService {
 
   async findSupportRequests(
     params: GetChatListParams,
-  ): Promise<ISupportRequest[]> {
+  ): Promise<{ count: number; result: ISupportRequest[] }> {
     try {
       let query = {};
       if (params.user) {
@@ -32,23 +32,37 @@ export class SupportRequestService implements ISupportRequestService {
       } else {
         query = { isActive: params.isActive };
       }
-      console.log(query);
-      return await this.supportRequestModel
+
+      const count = await this.supportRequestModel.countDocuments(query).exec();
+
+      const result = await this.supportRequestModel
         .find(query)
         .populate({
           path: 'messages',
-          select: ['-__v'],
+          select: ['-__v', '-text'],
           populate: {
             path: 'author',
             model: 'User',
             select: ['id', 'name'],
           },
         })
-        .populate('user', ['id', 'name'])
+        .populate('user', ['id', 'name', 'email', 'phone'])
         .limit(params.limit)
         .skip(params.offset)
         .select(['-__v'])
         .exec();
+
+      result.forEach((supportRequest: ISupportRequest, index: number) => {
+        supportRequest.messages?.some((message) => {
+          if (message.author.id !== params.activeUser && !message.readAt) {
+            result[index].hasNewMessages = true;
+          } else {
+            result[index].hasNewMessages = false;
+          }
+        });
+      });
+
+      return { count, result };
     } catch (err) {
       throw new InternalServerErrorException({
         status: 'fail',

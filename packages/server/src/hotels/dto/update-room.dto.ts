@@ -25,8 +25,8 @@ export class UpdateRoomDto {
   })
   description: Room['description'];
 
-  @IsArray()
-  images: Room['images'];
+  @IsString()
+  images?: string;
 
   @IsString()
   isEnabled: Room['isEnabled'];

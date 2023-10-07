@@ -4,11 +4,9 @@ import { Types } from 'mongoose';
 export class CreateBookingDto {
   @IsNotEmpty()
   @IsString()
-  'hotelRoom': Types.ObjectId;
-  @IsNotEmpty()
+  hotelRoom: Types.ObjectId;
   @IsDateString()
-  'startDate': string;
-  @IsNotEmpty()
+  startDate: string;
   @IsDateString()
-  'endDate': string;
+  endDate: string;
 }

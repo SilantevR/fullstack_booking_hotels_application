@@ -22,7 +22,7 @@ import { useStore } from "../../../app/store/hooks";
 import { getUser } from "../../profile/services/authSlice";
 import { useSignUpSubmit } from "../hooks/useSignUpSubmit";
 import { useValidationRoute } from "../../../hooks/useValidationRoute";
-import { styles } from "../../profile/styles/styles";
+import { styles } from "../../../styles";
 
 export const SignUp: React.FC = () => {
   const {

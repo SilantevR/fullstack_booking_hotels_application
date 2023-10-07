@@ -23,5 +23,5 @@ export interface IUserService {
   create(data: Partial<User>): Promise<User>;
   findById(id: User['id']): Promise<User>;
   findByEmail(email: string): Promise<User>;
-  findAll(params: SearchUserParams): Promise<User[]>;
+  findAll(params: SearchUserParams): Promise<{ count: number; result: User[] }>;
 }

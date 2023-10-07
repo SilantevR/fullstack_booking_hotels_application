@@ -8,6 +8,8 @@ import {
   Param,
   ValidationPipe,
   ForbiddenException,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { SupportRequestService } from './support.request.service';
 import { SupportRequestClientService } from './support.request.client.service';
@@ -29,6 +31,7 @@ export class ChatController {
     private readonly supportRequestEmployeeService: SupportRequestEmployeeService,
   ) {}
 
+  @HttpCode(HttpStatus.OK)
   @Roles(Role.Client)
   @Post('/client/support-requests/')
   async supportRequests(
@@ -45,13 +48,14 @@ export class ChatController {
   @Get('/client/support-requests/')
   async getSupportRequests(
     @ActiveUser('sub') id: ActiveUserData['sub'],
-    @Query('isActive') isActive?: string,
+    @Query('isActive') isActive?: boolean,
     @Query('limit') limit?: string,
     @Query('offset') offset?: string,
   ) {
     return await this.supportRequestService.findSupportRequests({
       user: id,
-      isActive: isActive ? Boolean(isActive) : true,
+      activeUser: id,
+      isActive: isActive,
       limit: limit ? parseInt(limit) : 10,
       offset: offset ? parseInt(offset) : 0,
     });
@@ -60,20 +64,21 @@ export class ChatController {
   @Roles(Role.Manager)
   @Get('/manager/support-requests/')
   async getManagerSupportRequests(
-    @Query('isActive') isActive?: string,
+    @ActiveUser('sub') id: ActiveUserData['sub'],
+    @Query('isActive') isActive?: boolean,
     @Query('limit') limit?: string,
     @Query('offset') offset?: string,
   ) {
     return await this.supportRequestService.findSupportRequests({
       user: null,
-      isActive: isActive ? Boolean(isActive) : true,
+      activeUser: id,
+      isActive: isActive,
       limit: limit ? parseInt(limit) : 10,
       offset: offset ? parseInt(offset) : 0,
     });
   }
 
-  @Roles(Role.Manager)
-  @Roles(Role.Client)
+  @Roles(Role.Manager, Role.Client)
   @Get('/common/support-requests/:id/messages')
   async getSupportRequestsMessages(
     @ActiveUser('sub') userId: ActiveUserData['sub'],
@@ -102,8 +107,8 @@ export class ChatController {
     }
   }
 
-  @Roles(Role.Manager)
-  @Roles(Role.Client)
+  @HttpCode(HttpStatus.OK)
+  @Roles(Role.Manager, Role.Client)
   @Post('/common/support-requests/:id/messages')
   async sendMessage(
     @ActiveUser('sub') userId: ActiveUserData['sub'],
@@ -134,8 +139,8 @@ export class ChatController {
     });
   }
 
-  @Roles(Role.Manager)
-  @Roles(Role.Client)
+  @HttpCode(HttpStatus.OK)
+  @Roles(Role.Manager, Role.Client)
   @Post('/common/support-requests/:id/messages/read')
   async readMessages(
     @ActiveUser('sub') userId: ActiveUserData['sub'],
@@ -169,6 +174,15 @@ export class ChatController {
         status: err.response.status,
         description: err.response.description,
       });
+    }
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Roles(Role.Manager)
+  @Post('/manager/support-requests/:id/close')
+  async closeRequest(@Param('id') id: Types.ObjectId) {
+    {
+      return await this.supportRequestEmployeeService.closeRequest(id);
     }
   }
 }

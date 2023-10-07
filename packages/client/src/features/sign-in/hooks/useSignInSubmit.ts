@@ -16,7 +16,7 @@ export const useSignInSubmit = () => {
       .then((response) => {
         if (response.status === 200) {
           set(fetchGetUser());
-          navigate(RoutesEnum.Profile);
+          navigate(RoutesEnum.Search);
         } else {
           return response.json();
         }

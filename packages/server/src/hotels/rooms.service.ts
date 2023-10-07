@@ -40,7 +40,7 @@ export class RoomsService implements HotelRoomService {
     try {
       return await this.roomModel
         .findById(id)
-        .populate('hotel', ['id', 'title', 'description'])
+        .populate('hotel', ['id', 'title', 'description', 'images'])
         .select(['-__v'])
         .exec();
     } catch (err) {
@@ -53,47 +53,45 @@ export class RoomsService implements HotelRoomService {
 
   async search(params: SearchRoomsParams) {
     try {
-      const { limit, offset, hotel, isEnabled } = params;
+      const { limit, offset, hotel, title, isEnabled } = params;
       let query: QueryParams = {};
+
       if (isEnabled) {
         query.isEnabled = isEnabled;
       }
 
       let result = [];
-      if (hotel) {
-        const hotels = await this.hotelsService.search({
-          title: hotel,
+      let count = 0;
+      if (title) {
+        const search = await this.hotelsService.search({
+          title: title,
         });
 
-        for (let item of hotels) {
-          query.hotel = { _id: item._id.valueOf().toString() };
+        for (let item of search.hotels) {
+          if (title) {
+            query.hotel = { _id: item._id.valueOf().toString() };
+          }
+
           const rooms = await this.roomModel
             .find(query)
             .populate('hotel', ['id', 'title', 'description'])
             .select(['-__v'])
             .exec();
+
           result = result.concat(rooms);
-          if (result.length >= Number(limit) && !offset) {
-            result = result.slice(0, Number(limit));
-          } else if (result.length > Number(limit) && !offset) {
-            result = result.slice(
-              Number(offset),
-              Number(offset) + Number(limit),
-            );
-          }
         }
       } else {
+        if (hotel) {
+          query.hotel = { _id: hotel };
+        }
         const rooms = await this.roomModel
           .find(query)
-          .skip(offset)
-          .limit(limit)
           .populate('hotel', ['id', 'title', 'description'])
           .select(['-__v'])
           .exec();
 
         result = result.concat(rooms);
       }
-
       for (let [index, item] of result.entries()) {
         const IsRoomUnawailable = await this.bookingService.checkReservation(
           item.id,
@@ -105,8 +103,13 @@ export class RoomsService implements HotelRoomService {
           result.splice(index, 1);
         }
       }
-
-      return result;
+      count = result.length;
+      if (result.length >= Number(limit) && !offset) {
+        result = result.slice(0, Number(limit));
+      } else if (offset && result.length > offset) {
+        result = result.slice(Number(offset), Number(limit));
+      }
+      return { count, result };
     } catch (err) {
       throw new InternalServerErrorException({
         status: 'fail',

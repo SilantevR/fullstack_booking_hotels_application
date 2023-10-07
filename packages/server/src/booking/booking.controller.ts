@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   ValidationPipe,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
@@ -20,6 +22,7 @@ import { Role } from '../auth/enums/role.enum';
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
 
+  @HttpCode(HttpStatus.OK)
   @Roles(Role.Client)
   @Post('/client/reservations')
   createBooking(

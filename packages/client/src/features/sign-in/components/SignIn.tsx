@@ -14,7 +14,7 @@ import { PasswordInput } from "../../../components/passwordInput/components/Pass
 import { RoutesEnum } from "../../../app/router/types";
 import { useSignInSubmit } from "../hooks/useSignInSubmit";
 import { useValidationRoute } from "../../../hooks/useValidationRoute";
-import { styles } from "../../profile/styles/styles";
+import { styles } from "../../../styles";
 import { UserContext } from "../../../components/requireAuth/RequireAuth";
 
 export const SignIn: React.FC = () => {
@@ -45,7 +45,7 @@ export const SignIn: React.FC = () => {
 
   const { onSubmit, serverError } = useSignInSubmit();
 
-  useValidationRoute(RoutesEnum.Profile, user);
+  useValidationRoute(RoutesEnum.Search, user);
 
   return (
     <Box

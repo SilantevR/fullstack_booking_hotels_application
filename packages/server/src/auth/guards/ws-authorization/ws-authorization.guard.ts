@@ -51,7 +51,7 @@ export class WsAuthorizationGuard implements CanActivate {
         { infer: true },
       );
 
-      client['requestUserKey'] = payload;
+      client[requestUserKey] = payload;
 
       const contextRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
         context.getHandler(),

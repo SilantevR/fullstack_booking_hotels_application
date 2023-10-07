@@ -82,12 +82,15 @@ export class UsersService implements IUserService {
       } else if (params.contactPhone) {
         query = { phone: { $regex: new RegExp(params.contactPhone, 'g') } };
       }
-      return this.userModel
+      const count = await this.userModel.count(query).exec();
+      const result = await this.userModel
         .find(query)
         .skip(params.offset)
         .limit(params.limit)
         .select(['-__v', '-password'])
         .exec();
+
+        return {count, result}
     } catch (err) {
       throw new InternalServerErrorException({
         status: err.response.status,

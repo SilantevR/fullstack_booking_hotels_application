@@ -9,6 +9,7 @@ import {
   IHotelService,
   QueryParams,
   SearchHotelParams,
+  UpdateHotelParams,
 } from './interfaces/interfaces';
 
 @Injectable()
@@ -56,13 +57,15 @@ export class HotelsService implements IHotelService {
         const regexp = new RegExp(title);
         query['title'] = { $regex: regexp, $options: 'ig' };
       }
-
-      return await this.hotelModel
+      const count = await this.hotelModel.count()
+      const hotels =  await this.hotelModel
         .find(query)
         .skip(offset)
         .limit(limit)
         .select(['-__v'])
         .exec();
+
+      return {count, hotels}
     } catch (err) {
       throw new InternalServerErrorException({
         status: err.response.status,
@@ -71,7 +74,7 @@ export class HotelsService implements IHotelService {
     }
   }
 
-  async update(id: Types.ObjectId, updateHotelDto: UpdateHotelDto) {
+  async update(id: Types.ObjectId, updateHotelDto: UpdateHotelParams) {
     try {
       return await this.hotelModel
         .findByIdAndUpdate(

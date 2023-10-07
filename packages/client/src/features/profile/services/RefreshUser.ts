@@ -17,7 +17,7 @@ export const refreshUser = (
     if (response.status === 200) {
       set(fetchGetUser());
     } else if (response.status !== 200) {
-      navigate(RoutesEnum.SignIn);
+      navigate(RoutesEnum.Search);
     }
   });
   return res;
