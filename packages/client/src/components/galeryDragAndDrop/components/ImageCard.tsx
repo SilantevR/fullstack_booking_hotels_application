@@ -86,7 +86,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({
           actionPosition="left"
         />
         <img
-          src={`${PUBLIC_URL + src}`}
+          src={`${PUBLIC_URL + "/" + src}`}
           alt="Фото отеля"
           height="100"
           width="200"
