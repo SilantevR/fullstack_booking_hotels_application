@@ -36,7 +36,9 @@
 8. В списке найдите IMAGE с названием `mongo` скопируйте CONTAINER ID,
 9. Выполните команду `docker exec -it <CONTAINER ID> mongosh --username <MONGO_INITDB_ROOT_USERNAME> --password`,
 10. Введите пароль `<MONGO_INITDB_ROOT_PASSWORD>`,
-    P.S. `<MONGO_INITDB_ROOT_USERNAME>` и `<MONGO_INITDB_ROOT_PASSWORD>` переменные файла .env
+
+#### P.S. `<MONGO_INITDB_ROOT_USERNAME>` и `<MONGO_INITDB_ROOT_PASSWORD>` переменные файла .env
+
 11. db.users.insertOne({ name: "Admin", role: "admin", email: "Admin@mail.ru", phone: "+79999999999", password:'$2b$10$sGo9v5TPrUC/yuhNehr8WuS/czlP6n813liaarL3.5apVPqe5VILW' }),
 12. Теперь вам доступна учетная запись администратора email: "Admin@mail.ru", password: "123_Aa_123"
 
