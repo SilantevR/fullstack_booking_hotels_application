@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { ImageCardProps } from "../types";
 import { IconButton, ImageListItemBar, ListItem } from "@mui/material";
@@ -11,7 +11,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({
   moveImage,
   handleImageRemove,
 }) => {
-  const ref = React.useRef<HTMLImageElement>(null);
+  const ref = useRef<HTMLImageElement>(null);
 
   const [, drop] = useDrop({
     accept: "image",

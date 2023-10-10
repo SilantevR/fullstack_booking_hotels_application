@@ -16,7 +16,7 @@ import { SupportRequestService } from './support.request.service';
 import { WsException } from '@nestjs/websockets';
 @WebSocketGateway({
   cors: {
-    origin: 'http://localhost:3000',
+    origin: process.env.SOKET_ORIGIN || 'http://localhost:3000',
     credentials: true,
   },
 })

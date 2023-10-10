@@ -10,7 +10,7 @@ import {
   isSameDay,
   differenceInCalendarDays,
 } from "date-fns";
-import { DateRange } from "../features/search/types";
+import { Range } from "react-date-range";
 
 export const DefaultDateRanges = [
   {
@@ -19,7 +19,7 @@ export const DefaultDateRanges = [
       startDate: new Date(),
       endDate: endOfWeek(new Date(), { weekStartsOn: 1 }),
     }),
-    isSelected(range: DateRange) {
+    isSelected(range: Range) {
       const definedRange = this.range();
       return (
         isSameDay(range.startDate ?? 0, definedRange.startDate ?? new Date()) &&
@@ -36,7 +36,7 @@ export const DefaultDateRanges = [
       startDate: startOfWeek(addDays(new Date(), +7), { weekStartsOn: 1 }),
       endDate: endOfWeek(addDays(new Date(), +7), { weekStartsOn: 1 }),
     }),
-    isSelected(range: DateRange) {
+    isSelected(range: Range) {
       const definedRange = this.range();
       return (
         isSameDay(range.startDate ?? 0, definedRange.startDate ?? new Date()) &&
@@ -53,7 +53,7 @@ export const DefaultDateRanges = [
       startDate: startOfWeek(addDays(new Date(), +7), { weekStartsOn: 1 }),
       endDate: endOfWeek(addDays(new Date(), +14), { weekStartsOn: 1 }),
     }),
-    isSelected(range: DateRange) {
+    isSelected(range: Range) {
       const definedRange = this.range();
       return (
         isSameDay(range.startDate ?? 0, definedRange.startDate ?? new Date()) &&

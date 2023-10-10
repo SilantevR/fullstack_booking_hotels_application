@@ -14,6 +14,8 @@
     "build": "lerna run build",
     "build-client": "lerna run build --scope=client",
     "build-server": "lerna run build --scope=server",
+    "preview-client": "lerna run preview --scope=client",
+    "preview-server": "lerna run start:prod --scope=server",
     "test": "lerna run test",
     "test-client": "lerna run test --scope=client",
     "test-server": "lerna run test --scope=server"

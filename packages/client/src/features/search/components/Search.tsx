@@ -54,8 +54,8 @@ export const Search: React.FC = () => {
       onSubmit(
         data,
         {
-          startDate: dates[0].startDate,
-          endDate: dates[0].endDate,
+          startDate: dates[0].startDate!,
+          endDate: dates[0].endDate!,
         },
         (value + 1) * limit,
         value * offset,
