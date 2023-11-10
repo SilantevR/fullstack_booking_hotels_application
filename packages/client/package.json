@@ -14,7 +14,6 @@
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
     "@reduxjs/toolkit": "^1.9.5",
-    "@types/react-dnd": "^3.0.2",
     "date-fns": "^2.30.0",
     "dotenv": "^16.3.1",
     "pure-react-carousel": "^1.30.1",
