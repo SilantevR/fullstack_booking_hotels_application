@@ -30,9 +30,6 @@ services:
         JWT_REFRESH_TOKEN_TTL: ${JWT_REFRESH_TOKEN_TTL}
         REQUEST_USER_KEY: ${REQUEST_USER_KEY}
         SOKET_ORIGIN: ${SOKET_ORIGIN}
-    depends_on:
-      mongo:
-        condition: service_healthy
     restart: always
     ports:
       - "127.0.0.1:5000:5000"
