@@ -1,8 +1,6 @@
 import { BASE_URL, baseOptions } from "../../../app/api/variables";
 import { Method } from "../../../app/api/types";
-import * as toolkitRaw from "@reduxjs/toolkit";
-const { createAsyncThunk } = ((toolkitRaw as any).default ??
-  toolkitRaw) as typeof toolkitRaw;
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getUser = {
   fetchData: () => {

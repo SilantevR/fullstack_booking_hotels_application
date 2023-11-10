@@ -1,6 +1,4 @@
-import * as toolkitRaw from "@reduxjs/toolkit";
-const { createSlice } = ((toolkitRaw as any).default ??
-  toolkitRaw) as typeof toolkitRaw;
+import { createSlice } from "@reduxjs/toolkit";
 import { fetchGetUser } from "./GetUser";
 import { RootState } from "../../../app/store/store";
 import { UserData } from "../types";
