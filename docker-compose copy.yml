@@ -12,7 +12,7 @@ services:
         VITE_SOKET_URL: ${VITE_SOKET_URL}
     restart: always
     ports:
-      - 80:3000
+      - 3000:3000
 
   server:
     container_name: booking-app-server
@@ -22,7 +22,7 @@ services:
       dockerfile: Dockerfile.server
       args:
         SERVER_PORT: ${SERVER_PORT}
-        MONGODB_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@127.0.0.1:27017/booking
+        MONGODB_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/
         JWT_SECRET: ${JWT_SECRET}
         JWT_TOKEN_AUDIENCE: ${JWT_TOKEN_AUDIENCE}
         JWT_TOKEN_ISSUER: ${JWT_TOKEN_ISSUER}
@@ -35,4 +35,23 @@ services:
         condition: service_healthy
     restart: always
     ports:
-      - "127.0.0.1:5000:5000"
+      - "5000:5000"
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    healthcheck:
+      test: "exit 0"
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/

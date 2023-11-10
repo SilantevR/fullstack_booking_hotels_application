@@ -43,6 +43,7 @@ import { AllAccessGuard } from './auth/guards/access-token/all-access.guard';
     }),
     MongooseModule.forRoot(
       process.env.MONGODB_URL || 'mongodb://localhost:27017/booking',
+      //'mongodb://'+DATABASEUSERNAME+':'+DATABASEPASSWORD+'@'+DATABASEHOST+':'DATABASEPORT+'/'+DATABASENAME
     ),
     HotelsModule,
     BookingModule,
