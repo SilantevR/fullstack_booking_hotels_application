@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "vite --host",
-    "build": "tsc && vite build",
+    "build": "tsc && vite --max-old-space-size=8192 build",
     "preview": "vite preview"
   },
   "dependencies": {
