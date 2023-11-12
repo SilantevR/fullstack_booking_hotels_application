@@ -17,8 +17,7 @@ services:
   server:
     container_name: booking-app-server
     image: booking-app-server
-    service:
-      network_mode: "host"
+    network_mode: "host"
     build:
       context: .
       dockerfile: Dockerfile.server
