@@ -41,8 +41,8 @@ services:
     restart: always
     network_mode: "host"
     volumes:
-      - ~/data/db:/data/db
-      - ~/s3cloud:~/backup
+      - /home/ubuntu/data/db:/data/db
+      - /home/ubuntu/s3cloud:/home/root/backup
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
