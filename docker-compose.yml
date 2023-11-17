@@ -41,7 +41,7 @@ services:
     restart: always
     network_mode: "host"
     volumes:
-      - /home/ubuntu/data/db:/data/db
+      - /home/ubuntu/mongo/db:/data/db
       - /home/ubuntu/s3cloud:/home/root/backup
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
