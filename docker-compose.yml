@@ -23,7 +23,7 @@ services:
       dockerfile: Dockerfile.server
       args:
         SERVER_PORT: ${SERVER_PORT}
-        MONGODB_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@127.0.0.1:27017/booking
+        MONGODB_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@127.0.0.1:27017/admin
         JWT_SECRET: ${JWT_SECRET}
         JWT_TOKEN_AUDIENCE: ${JWT_TOKEN_AUDIENCE}
         JWT_TOKEN_ISSUER: ${JWT_TOKEN_ISSUER}
