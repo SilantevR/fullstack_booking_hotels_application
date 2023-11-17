@@ -32,3 +32,19 @@ services:
         REQUEST_USER_KEY: ${REQUEST_USER_KEY}
         SOKET_ORIGIN: ${SOKET_ORIGIN}
     restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  mongo:
+    image: mongo
+    restart: always
+    network_mode: "host"
+    volumes:
+      - ~/data/db:/data/db
+      - ~/s3cloud:~/backup
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    healthcheck:
+      test: "exit 0"
