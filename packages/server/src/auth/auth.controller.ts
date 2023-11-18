@@ -36,12 +36,12 @@ export class AuthController {
       user,
     );
     response.cookie('accessToken', accessToken, {
-      secure: true,
+      //secure: true,
       httpOnly: true,
       sameSite: true,
     });
     response.cookie('refreshToken', refreshToken, {
-      secure: true,
+      //secure: true,
       httpOnly: true,
       sameSite: true,
     });
@@ -64,12 +64,12 @@ export class AuthController {
     const { tokens, user } = await this.authService.find(signInUserDto);
 
     response.cookie('accessToken', tokens.accessToken, {
-      secure: true,
+      //secure: true,
       httpOnly: true,
       sameSite: true,
     });
     response.cookie('refreshToken', tokens.refreshToken, {
-      secure: true,
+      //secure: true,
       httpOnly: true,
       sameSite: true,
     });
@@ -105,14 +105,14 @@ export class AuthController {
       path: '/',
       domain: 'localhost',
       httpOnly: true,
-      secure: true,
+      //secure: true,
       sameSite: 'strict',
     });
     response.clearCookie('refreshToken', {
       path: '/',
       domain: 'localhost',
       httpOnly: true,
-      secure: true,
+      //secure: true,
       sameSite: 'strict',
     });
     return;
@@ -129,12 +129,12 @@ export class AuthController {
       request.cookies['refreshToken'],
     );
     response.cookie('accessToken', accessToken, {
-      secure: true,
+      //secure: true,
       httpOnly: true,
       sameSite: true,
     });
     response.cookie('refreshToken', refreshToken, {
-      secure: true,
+      //secure: true,
       httpOnly: true,
       sameSite: true,
     });
