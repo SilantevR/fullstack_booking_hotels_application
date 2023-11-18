@@ -45,7 +45,7 @@ services:
     volumes:
       - /home/ubuntu/mongo/db:/data/db
       - /home/ubuntu/s3cloud:/home/root/backup
-      - /home/ubuntu/mongoconf/mongod.conf.orig:/etc/mongod.conf.orig
+      - /home/ubuntu/mongoetc/:/etc/
       - /home/ubuntu/script:/home/root/script
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
