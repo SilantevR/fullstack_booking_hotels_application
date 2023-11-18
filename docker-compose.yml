@@ -42,6 +42,10 @@ services:
     image: mongo
     restart: always
     network_mode: "host"
+    command:
+      - "--auth"
+      - "-f"
+      - "/etc/mongod.conf"
     volumes:
       - /home/ubuntu/mongo/db:/data/db
       - /home/ubuntu/s3cloud:/home/root/backup
