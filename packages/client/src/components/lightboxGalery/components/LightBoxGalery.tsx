@@ -20,6 +20,7 @@ import {
 } from "@mui/icons-material";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { LightBox } from "./LightBox";
+import { PUBLIC_URL } from "../../../app/api/variables";
 
 function srcset(
   image: string,
@@ -29,10 +30,10 @@ function srcset(
   cols = 1
 ) {
   return {
-    src: `http://localhost:5000/${image}?w=${width * cols}&h=${
+    src: `${PUBLIC_URL}/${image}?w=${width * cols}&h=${
       height * rows
     }&fit=crop&auto=format`,
-    srcSet: `http://localhost:5000/${image}?w=${width * cols}&h=${
+    srcSet: `${PUBLIC_URL}/${image}?w=${width * cols}&h=${
       height * rows
     }&fit=crop&auto=format&dpr=2 2x`,
   };
@@ -95,7 +96,7 @@ export const LightBoxGalery: React.FC<lightBoxGaleryProps> = ({ images }) => {
         images={images}
         state={state}
         setState={setState}
-        url={`http://localhost:5000/`}
+        url={`${PUBLIC_URL}/`}
       />
     </>
   );

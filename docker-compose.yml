@@ -19,7 +19,7 @@ services:
     image: app-server
     network_mode: "host"
     volumes:
-      - /home/ubuntu/public:/public
+      - "/home/ubuntu/public:/app/public"
     build:
       context: .
       dockerfile: Dockerfile.server
