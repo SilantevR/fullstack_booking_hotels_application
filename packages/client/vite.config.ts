@@ -12,10 +12,10 @@ export default defineConfig({
     watch: {
       usePolling: true,
     },
-    hmr: {
+    /*hmr: {
       host: "0.0.0.0",
       port: Number(process.env.CLIENT_PORT) || 3000,
-    },
+    },*/
     strictPort: true,
     host: true,
     port: Number(process.env.CLIENT_PORT) || 3000,
