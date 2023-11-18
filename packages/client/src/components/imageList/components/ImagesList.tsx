@@ -36,7 +36,7 @@ export const ImagesList: React.FC<{ images: string[]; url?: string }> = ({
         images={images}
         state={state}
         setState={setState}
-        url={url ?? ""}
+        url={url ? `${url}/` : ""}
       />
     </>
   );

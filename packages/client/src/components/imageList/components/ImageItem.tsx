@@ -14,7 +14,7 @@ export const ImageItem: React.FC<{
       sx={{ cursor: "pointer", maxWidth: "220px" }}
     >
       <img
-        src={result ? `${url + "/" + result}` : ""}
+        src={result ? `${url + result}` : ""}
         alt="Фото отеля"
         height="100"
         width="200"
