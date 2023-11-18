@@ -18,6 +18,8 @@ services:
     container_name: booking-app-server
     image: booking-app-server
     network_mode: "host"
+    volumes:
+      - /home/ubuntu/public:/public
     build:
       context: .
       dockerfile: Dockerfile.server
