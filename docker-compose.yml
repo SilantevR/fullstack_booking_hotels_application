@@ -42,15 +42,10 @@ services:
     image: mongo
     restart: always
     network_mode: "host"
-    command:
-      - "mongod"
-      - "--auth"
-      - "--config"
-      - "/etc/config/mongod.conf"
     volumes:
       - "/home/ubuntu/mongo/db:/data/db"
       - "/home/ubuntu/s3cloud:/home/root/backup"
-      - "/home/ubuntu/mongoconf/:/etc/config"
+      - "/home/ubuntu/mongoconf/:/etc"
       - "/home/ubuntu/script:/home/root/script"
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
