@@ -13,6 +13,7 @@ import Stack from "@mui/material/Stack";
 import { Box, CardMedia } from "@mui/material";
 import { ArrowForward, ArrowBack } from "@mui/icons-material";
 import { CarouselProps } from "../types";
+import { PUBLIC_URL } from "../../../app/api/variables";
 
 export const ImageCarousel: React.FC<CarouselProps> = (props) => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -44,7 +45,7 @@ export const ImageCarousel: React.FC<CarouselProps> = (props) => {
             <CardMedia
               component="img"
               height="50"
-              image={`http://localhost:5000/${props.images[index]}`}
+              image={`${PUBLIC_URL}/${props.images[index]}`}
               alt="фото номера"
             />
           </Box>
@@ -72,10 +73,7 @@ export const ImageCarousel: React.FC<CarouselProps> = (props) => {
           <Slider>
             {props.images.map((item, index) => (
               <Slide key={index} index={index}>
-                <ImageWithZoom
-                  src={`http://localhost:5000/${item}`}
-                  key={index}
-                />
+                <ImageWithZoom src={`${PUBLIC_URL}/${item}`} key={index} />
               </Slide>
             ))}
           </Slider>
