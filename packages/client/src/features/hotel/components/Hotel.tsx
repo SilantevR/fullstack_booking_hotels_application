@@ -156,7 +156,7 @@ export const Hotel: React.FC = () => {
                   {format(new Date(hotel.updatedAt), "dd.MM.yyyy")}
                 </Typography>
                 {hotel.images?.length ? (
-                  <ImagesList images={hotel.images} url={`${PUBLIC_URL}/`} />
+                  <ImagesList images={hotel.images} url={PUBLIC_URL} />
                 ) : (
                   <></>
                 )}

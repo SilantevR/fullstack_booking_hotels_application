@@ -21,7 +21,7 @@ export const ImagesList: React.FC<{ images: string[]; url?: string }> = ({
 
   const list = images.map((result, index) => (
     <ImageItem
-      url={url ?? ""}
+      url={url ? `${url}/` : ""}
       key={index}
       index={index}
       result={result}
