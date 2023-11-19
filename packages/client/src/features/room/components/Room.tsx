@@ -126,7 +126,10 @@ export const Room: React.FC = () => {
                 </Typography>
               </CardActionArea>
               {room.hotel?.images ? (
-                <ImagesList images={room.hotel?.images} url={`PUBLIC_URL`} />
+                <ImagesList
+                  images={room.hotel?.images}
+                  url={`${PUBLIC_URL}/`}
+                />
               ) : null}
 
               <Typography gutterBottom variant="h5" component="div">
