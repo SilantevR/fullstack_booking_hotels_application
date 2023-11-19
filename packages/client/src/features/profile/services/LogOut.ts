@@ -5,9 +5,9 @@ export const logout = async (): Promise<Response> => {
   const requestOptions: RequestOptions = {
     method: Method.POST,
   };
-  const cacheNames = await caches.keys();
+  //const cacheNames = await caches.keys();
 
-  await Promise.all(cacheNames.map((name) => caches.delete(name)));
+  //await Promise.all(cacheNames.map((name) => caches.delete(name)));
 
   return fetch(`${BASE_URL}/auth/logout`, {
     ...requestOptions,
