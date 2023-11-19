@@ -16,12 +16,14 @@ import { Auth } from './decorator/auth.decorator';
 import { Response, Request } from 'express';
 import { UsersService } from 'src/users/users.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('api')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly usersService: UsersService,
+    private configService: ConfigService,
   ) {}
 
   @Auth(AuthType.None)
@@ -103,14 +105,18 @@ export class AuthController {
   ) {
     response.clearCookie('accessToken', {
       path: '/',
-      domain: 'localhost',
+      domain: this.configService.get('DOMAIN')
+        ? this.configService.get('DOMAIN')
+        : 'localhost',
       httpOnly: true,
       //secure: true,
       sameSite: 'strict',
     });
     response.clearCookie('refreshToken', {
       path: '/',
-      domain: 'localhost',
+      domain: this.configService.get('DOMAIN')
+        ? this.configService.get('DOMAIN')
+        : 'localhost',
       httpOnly: true,
       //secure: true,
       sameSite: 'strict',

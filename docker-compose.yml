@@ -33,6 +33,7 @@ services:
         JWT_REFRESH_TOKEN_TTL: ${JWT_REFRESH_TOKEN_TTL}
         REQUEST_USER_KEY: ${REQUEST_USER_KEY}
         SOKET_ORIGIN: ${SOKET_ORIGIN}
+        DOMAIN: ${DOMAIN}
     restart: always
     depends_on:
       mongo:
