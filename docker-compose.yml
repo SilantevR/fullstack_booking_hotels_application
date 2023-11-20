@@ -1,22 +1,21 @@
 version: "3.9"
 services:
-  nginx:
-    image: "jc21/nginx-proxy-manager:latest"
-    container_name: app-nginx
-    restart: unless-stopped
-    ports:
-      - "80:80" # Public HTTP Port
-      - "443:443" # Public HTTPS Port
-      - "81:81" # Admin Web Port
-
+  reverse-proxy:
+    # The official v2 Traefik docker image
+    image: traefik:v2.10
+    # Enables the web UI and tells Traefik to listen to docker
+    network_mode: "host"
+    command: --api.insecure=true --providers.docker
     volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
 
   client:
     container_name: app-client
     image: app-client
     network_mode: "host"
+    labels:
+      - "traefik.http.routers.client.rule=Host(`diplomproject.duckdns.org`)"
     build:
       context: .
       dockerfile: Dockerfile.client
@@ -30,6 +29,8 @@ services:
     container_name: app-server
     image: app-server
     network_mode: "host"
+    labels:
+      - "traefik.http.routers.server.rule=Host(`diplomproject.duckdns.org/api`)"
     volumes:
       - "/home/ubuntu/public:/app/public"
     build:
