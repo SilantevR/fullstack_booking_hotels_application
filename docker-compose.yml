@@ -15,6 +15,7 @@ services:
     image: app-client
     network_mode: "host"
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.client.rule=Host(`diplomproject.duckdns.org`)"
     build:
       context: .
@@ -30,6 +31,7 @@ services:
     image: app-server
     network_mode: "host"
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.server.rule=Host(`diplomproject.duckdns.org/api`)"
     volumes:
       - "/home/ubuntu/public:/app/public"
