@@ -1,8 +1,23 @@
 version: "3.9"
 services:
+  app:
+    image: "jc21/nginx-proxy-manager:latest"
+    container_name: app-nginx
+    network_mode: "host"
+    restart: unless-stopped
+    ports:
+      - "80:80" # Public HTTP Port
+      - "443:443" # Public HTTPS Port
+      - "81:81" # Admin Web Port
+
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+
   client:
     container_name: app-client
     image: app-client
+    network_mode: "host"
     build:
       context: .
       dockerfile: Dockerfile.client
@@ -11,8 +26,6 @@ services:
         VITE_PUBLIC_URL: ${VITE_PUBLIC_URL}
         VITE_SOKET_URL: ${VITE_SOKET_URL}
     restart: always
-    ports:
-      - 80:3000
 
   server:
     container_name: app-server
@@ -46,7 +59,6 @@ services:
     volumes:
       - "/home/ubuntu/mongo/db:/data/db"
       - "/home/ubuntu/s3cloud:/home/root/backup"
-      - "/home/ubuntu/script:/home/root/script"
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
