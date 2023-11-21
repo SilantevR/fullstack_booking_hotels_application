@@ -5,7 +5,21 @@ services:
     image: traefik:v2.10
     # Enables the web UI and tells Traefik to listen to docker
     network_mode: "host"
-    command: --api.insecure=true --providers.docker
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--providers.docker.exposedByDefault=false"
+      - "--providers.docker.network=host"
+      - "--entrypoints.http.address=:80"
+      #     - "--entrypoints.http.http.redirections.entrypoint.to=https"
+      #     - "--entrypoints.http.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.https.address=:443"
+      - "--log.level=DEBUG"
+      # # Let'sEncrypt
+      # - "--entrypoints.https.http.tls.certResolver=le"
+      # - "--certificatesresolvers.le.acme.tlschallenge=true"
+      # - "--certificatesresolvers.le.acme.email=you@mail.net"
+      # - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
@@ -15,8 +29,11 @@ services:
     image: app-client
     network_mode: "host"
     labels:
+      #      - "traefik.port=3000"
       - "traefik.enable=true"
       - "traefik.http.routers.client.rule=Host(`diplomproject.duckdns.org`)"
+      - "traefik.http.routers.client.entrypoints=http"
+      - "traefik.http.services.nginx.loadbalancer.server.port=3000"
     build:
       context: .
       dockerfile: Dockerfile.client
