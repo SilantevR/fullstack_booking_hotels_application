@@ -1,41 +1,31 @@
 version: "3.9"
 services:
-  reverse-proxy:
-    # The official v2 Traefik docker image
-    image: traefik:v2.10
-    # Enables the web UI and tells Traefik to listen to docker
-    container_name: traefik
+  nginx:
+    container_name: app-nginx
+    image: nginx
     network_mode: "host"
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker"
-      - "--providers.docker.exposedByDefault=false"
-      - "--providers.docker.network=host"
-      - "--entrypoints.http.address=:80"
-      #     - "--entrypoints.http.http.redirections.entrypoint.to=https"
-      #     - "--entrypoints.http.http.redirections.entrypoint.scheme=https"
-      - "--entrypoints.https.address=:443"
-      - "--log.level=DEBUG"
-      # # Let'sEncrypt
-      # - "--entrypoints.https.http.tls.certResolver=le"
-      # - "--certificatesresolvers.le.acme.tlschallenge=true"
-      # - "--certificatesresolvers.le.acme.email=you@mail.net"
-      # - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    restart: always
     volumes:
-      # So that Traefik can listen to the Docker events
-      - /var/run/docker.sock:/var/run/docker.sock
+      - home/ubuntu/app/nginx.conf:/etc/nginx/nginx.conf
+      - home/ubuntu/certbot/conf:/etc/letsencrypt
+      - home/ubuntu/certbot/var:/var/lib/letsencrypt
+      - home/ubuntu/certbot/web-root:/usr/share/nginx/html
+
+  certbot:
+    container_name: app-certbot
+    image: certbot/certbot
+    depends_on:
+      - nginx
+    volumes:
+      - home/ubuntu/certbot/conf:/etc/letsencrypt
+      - home/ubuntu/certbot/var:/var/lib/letsencrypt
+      - home/ubuntu/certbot/web-root:/usr/share/nginx/html
+    command: certonly --webroot --webroot-path=/usr/share/nginx/html --email ${EMAIL} --agree-tos --no-eff-email --staging -d ${DOMAIN} -d www.${DOMAIN}
 
   client:
     container_name: app-client
     image: app-client
     network_mode: "host"
-    labels:
-      - "traefik.port=3000"
-      - "traefik.enable=true"
-      - "traefik.http.routers.client.rule=Host(`diplomproject.duckdns.org`)"
-      - "traefik.http.routers.client.entrypoints=http"
     build:
       context: .
       dockerfile: Dockerfile.client
@@ -49,9 +39,6 @@ services:
     container_name: app-server
     image: app-server
     network_mode: "host"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.server.rule=Host(`diplomproject.duckdns.org/api`)"
     volumes:
       - "/home/ubuntu/public:/app/public"
     build:
