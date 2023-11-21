@@ -10,6 +10,7 @@ services:
       - "/home/ubuntu/certbot/conf:/etc/letsencrypt"
       - "/home/ubuntu/certbot/var:/var/lib/letsencrypt"
       - "/home/ubuntu/certbot/web-root:/usr/share/nginx/html"
+      - "/home/ubuntu/public:/home/root/public"
 
   certbot:
     container_name: app-certbot
