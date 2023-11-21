@@ -4,6 +4,7 @@ services:
     # The official v2 Traefik docker image
     image: traefik:v2.10
     # Enables the web UI and tells Traefik to listen to docker
+    container_name: traefik
     network_mode: "host"
     command:
       - "--api.insecure=true"
@@ -29,11 +30,11 @@ services:
     image: app-client
     network_mode: "host"
     labels:
-      #      - "traefik.port=3000"
+      #- "traefik.port=3000"
       - "traefik.enable=true"
       - "traefik.http.routers.client.rule=Host(`diplomproject.duckdns.org`)"
       - "traefik.http.routers.client.entrypoints=http"
-      - "traefik.http.services.nginx.loadbalancer.server.port=3000"
+      - "traefik.http.services.nginx.loadbalancer.server.port=127.0.0.1:3000"
     build:
       context: .
       dockerfile: Dockerfile.client
