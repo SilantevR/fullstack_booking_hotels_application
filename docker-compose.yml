@@ -6,10 +6,10 @@ services:
     network_mode: "host"
     restart: always
     volumes:
-      - home/ubuntu/nginx/:/etc/nginx/
-      - home/ubuntu/certbot/conf:/etc/letsencrypt
-      - home/ubuntu/certbot/var:/var/lib/letsencrypt
-      - home/ubuntu/certbot/web-root:/usr/share/nginx/html
+      - "/home/ubuntu/nginx/:/etc/nginx/"
+      - "/home/ubuntu/certbot/conf:/etc/letsencrypt"
+      - "/home/ubuntu/certbot/var:/var/lib/letsencrypt"
+      - "/home/ubuntu/certbot/web-root:/usr/share/nginx/html"
 
   certbot:
     container_name: app-certbot
@@ -17,9 +17,9 @@ services:
     depends_on:
       - nginx
     volumes:
-      - home/ubuntu/certbot/conf:/etc/letsencrypt
-      - home/ubuntu/certbot/var:/var/lib/letsencrypt
-      - home/ubuntu/certbot/web-root:/usr/share/nginx/html
+      - "/home/ubuntu/certbot/conf:/etc/letsencrypt"
+      - "/home/ubuntu/certbot/var:/var/lib/letsencrypt"
+      - "/home/ubuntu/certbot/web-root:/usr/share/nginx/html"
     command: certonly --webroot --webroot-path=/usr/share/nginx/html --email ${EMAIL} --agree-tos --no-eff-email --staging -d ${DOMAIN} -d www.${DOMAIN}
 
   client:
