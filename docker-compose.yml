@@ -6,7 +6,7 @@ services:
     network_mode: "host"
     restart: always
     volumes:
-      - "/home/ubuntu/nginx/:/etc/nginx/"
+      - "/home/ubuntu/nginx/nginx.conf:/etc/nginx/nginx.conf"
       - "/home/ubuntu/certbot/conf:/etc/letsencrypt"
       - "/home/ubuntu/certbot/var:/var/lib/letsencrypt"
       - "/home/ubuntu/certbot/web-root:/usr/share/nginx/html"
