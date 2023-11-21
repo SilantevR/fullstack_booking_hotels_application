@@ -21,6 +21,10 @@ services:
       # - "--certificatesresolvers.le.acme.tlschallenge=true"
       # - "--certificatesresolvers.le.acme.email=you@mail.net"
       # - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
+    networks:
+      - host
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
@@ -30,11 +34,10 @@ services:
     image: app-client
     network_mode: "host"
     labels:
-      #- "traefik.port=3000"
+      - "traefik.port=3000"
       - "traefik.enable=true"
       - "traefik.http.routers.client.rule=Host(`diplomproject.duckdns.org`)"
       - "traefik.http.routers.client.entrypoints=http"
-      - "traefik.http.services.nginx.loadbalancer.server.port=127.0.0.1:3000"
     build:
       context: .
       dockerfile: Dockerfile.client
