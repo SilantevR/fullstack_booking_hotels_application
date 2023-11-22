@@ -21,7 +21,7 @@ services:
       - "/home/ubuntu/certbot/conf:/etc/letsencrypt"
       - "/home/ubuntu/certbot/var:/var/lib/letsencrypt"
       - "/home/ubuntu/certbot/web-root:/usr/share/nginx/html"
-    command: certonly --webroot --webroot-path=/usr/share/nginx/html --email ${EMAIL} --agree-tos --no-eff-email --staging -d ${DOMAIN} -d www.${DOMAIN}
+    command: certonly --webroot --webroot-path=/usr/share/nginx/html --email ${EMAIL} --agree-tos --no-eff-email --force-renewal -d ${DOMAIN} -d www.${DOMAIN}
 
   client:
     container_name: app-client
