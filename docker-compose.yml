@@ -11,7 +11,7 @@ services:
       - "/home/ubuntu/certbot/var:/var/lib/letsencrypt"
       - "/home/ubuntu/certbot/web-root:/usr/share/nginx/html"
       - "/home/ubuntu/certbot/dhparam:/etc/ssl/certs"
-      - "/home/ubuntu/public:/usr/share/nginx/html/public"
+      - "/home/ubuntu/public:/home/root/public"
 
   certbot:
     container_name: app-certbot
