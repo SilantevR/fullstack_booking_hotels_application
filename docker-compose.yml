@@ -27,7 +27,9 @@ services:
   client:
     container_name: app-client
     image: app-client
-    network_mode: "host"
+    volumes:
+      - "/home/ubuntu/nginx/client:/etc/nginx/conf.d"
+      - "/home/ubuntu/public:/usr/share/nginx/html/public"
     build:
       context: .
       dockerfile: Dockerfile.client
