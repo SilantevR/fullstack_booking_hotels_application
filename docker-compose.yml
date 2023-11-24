@@ -4,7 +4,7 @@ services:
     container_name: app-certbot
     image: certbot/certbot
     depends_on:
-      - nginx
+      - client
     volumes:
       - "/home/ubuntu/certbot/conf:/etc/letsencrypt"
       - "/home/ubuntu/certbot/var:/var/lib/letsencrypt"
