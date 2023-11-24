@@ -103,7 +103,7 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
     @Req() request: Request,
   ) {
-    response.clearCookie('accessToken', {
+    /*response.clearCookie('accessToken', {
       path: '/',
       domain: this.configService.get('DOMAIN')
         ? this.configService.get('DOMAIN')
@@ -120,7 +120,18 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
+    });*/
+    response.cookie('accessToken', '', {
+      secure: true,
+      httpOnly: true,
+      sameSite: true,
     });
+    response.cookie('refreshToken', '', {
+      secure: true,
+      httpOnly: true,
+      sameSite: true,
+    });
+
     return;
   }
 
