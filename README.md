@@ -2,7 +2,9 @@
 
 ## Booking hotels application - React single page aplication with server built on NestJS .
 
-### Main technologies: TypeScript, MongoDB, Mongoose, React, NestJS, SocketIO, MaterialUI, ReactHookForm, Redux, ReactRouter, VITE, Lerna, Docker, Nginx
+### Main technologies: TypeScript, MongoDB, Mongoose, React, NestJS, SocketIO, MaterialUI, ReactHookForm, Redux, ReactRouter, VITE, Lerna, Docker, Nginx, Certbot
+
+### Деплой на облаке `https://diplomproject.duckdns.org`
 
 ### Техническое задание: `https://github.com/netology-code/fjs-diplom``
 
