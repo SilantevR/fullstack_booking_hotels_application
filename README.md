@@ -2,7 +2,25 @@
 
 ## Booking hotels application - React single page aplication with server built on NestJS .
 
-### Main technologies: TypeScript, MongoDB, Mongoose, React, NestJS, SocketIO, MaterialUI, ReactHookForm, Redux, ReactRouter, VITE, Lerna, Docker, Nginx, Certbot
+### Main technologies:
+
+![TypeScript](https://img.shields.io/badge/-typescript-0a0a0a?style=for-the-badge&logo=typescript)
+![MongoDB](https://img.shields.io/badge/-mongodb-0a0a0a?style=for-the-badge&logo=mongodb)
+![React](https://img.shields.io/badge/-react-0a0a0a?style=for-the-badge&logo=react)
+![ReactHookForm](https://img.shields.io/badge/-reacthookform-0a0a0a?style=for-the-badge&logo=reacthookform)
+![Redux](https://img.shields.io/badge/-redux-0a0a0a?style=for-the-badge&logo=redux)
+![ReactRouter](https://img.shields.io/badge/-reactrouter-0a0a0a?style=for-the-badge&logo=reactrouter)
+![Vite](https://img.shields.io/badge/-vite-0a0a0a?style=for-the-badge&logo=vite)
+![Lerna](https://img.shields.io/badge/-lerna-0a0a0a?style=for-the-badge&logo=lerna)
+![NestJS](https://img.shields.io/badge/-nestjs-0a0a0a?style=for-the-badge&logo=nestjs)
+![SoketIO](https://img.shields.io/badge/-socketio-0a0a0a?style=for-the-badge&logo=soketio)
+![MaterialUI](https://img.shields.io/badge/-mui-0a0a0a?style=for-the-badge&logo=mui)
+![Mongoose](https://img.shields.io/badge/-mongoose-0a0a0a?style=for-the-badge&logo=mongoose)
+![Docker](https://img.shields.io/badge/-Docker-0a0a0a?style=for-the-badge&logo=Docker)
+![Ubuntu](https://img.shields.io/badge/-Ubuntu-0a0a0a?style=for-the-badge&logo=Ubuntu)
+![Nginx](https://img.shields.io/badge/-Nginx-0a0a0a?style=for-the-badge&logo=Nginx)
+![letsencrypt](https://img.shields.io/badge/-letsencrypt-0a0a0a?style=for-the-badge&logo=letsencrypt)
+<br/>
 
 ### Деплой на облаке: https://diplomproject.duckdns.org
 
